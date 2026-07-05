@@ -24,6 +24,11 @@ Revision: A
 | T-MIS-001 | URS-F-003, URS-F-009 | Nominal mission phase sequence completes | L0 |
 | T-MIS-002 | URS-S-003 | Dock/transfer commands before access are rejected | L0 |
 | T-MIS-003 | URS-F-009 | Pause/resume/cancel respects lifecycle constraints | L0 |
+| T-SIM-001 | URS-S-004 | Controllers, sensors and bounded commanded motion pass headless acceptance | L2 |
+| T-MAP-001 | URS-F-001 | Versioned factory map is reproduced exactly from world collision geometry | L1 |
+| T-MAP-002 | URS-F-001 | SLAM Toolbox publishes `/map` before and after bounded commanded motion | L2 |
+| T-CMD-001 | URS-S-004 | Command adapter rejects non-finite input and clamps model limits | L1 |
+| T-NAV-002 | URS-F-002, URS-F-005 | AMCL and Nav2 complete one deterministic headless waypoint goal | L2 |
 | T-NAV-001 | URS-F-005, URS-P-001 | Approved route success over 100 seeded trials | L2 |
 | T-REC-001 | URS-F-008, URS-P-002 | Blocked-path recovery succeeds within target | L2 |
 | T-LOC-001 | URS-F-002, URS-P-006 | Cold-start localization at surveyed checkpoints | L2/L4 |
@@ -37,4 +42,3 @@ Revision: A
 - Timing claims include raw data, summary statistics, and host specifications.
 - Failed tests remain in the report with disposition; they are not silently removed.
 - Hardware SAT requires a witnessed checklist and photographs or video for physical controls.
-

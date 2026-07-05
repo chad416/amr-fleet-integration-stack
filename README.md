@@ -27,7 +27,7 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | ROS 2 interfaces | Implemented and compiled | Colcon build evidence |
 | Differential-drive AMR model | Implemented and compiled | Xacro, controller configuration, Linux build |
 | Gazebo simulation baseline | Implemented and runtime accepted | Factory world, launch orchestration, bridge and motion smoke test |
-| Nav2 integration | Planned | Commissioning backlog |
+| Nav2 integration | Implemented and runtime accepted | Versioned map, AMCL, planner, controller, collision monitor, command adapter and waypoint smoke test |
 | PLC/OPC UA station handshake | Planned | Interface specification |
 | Fleet telemetry dashboards | Planned | Interface specification |
 | Physical AMR commissioning | Hardware-dependent | Commissioning checklist |
@@ -42,6 +42,7 @@ ros_ws/src/
   amr_interfaces/       ROS 2 messages, services, and actions
   amr_description/      Robot model and ros2_control configuration
   amr_simulation/       Gazebo world, bridge and repeatable launch system
+  amr_navigation/       Mapping, localization, Nav2 and versioned factory map
 ros_ws/src/amr_fleet_core/test/
                         Transport-independent verification suite
 ```
@@ -64,6 +65,8 @@ sudo bash scripts/bootstrap_ros2_jazzy.sh
 bash scripts/verify_ros2_environment.sh
 bash scripts/build_and_test_ros2.sh
 bash scripts/smoke_test_simulation.sh
+bash scripts/smoke_test_mapping.sh
+bash scripts/smoke_test_navigation.sh
 ```
 
 Generated ROS build, install, and test artifacts are kept on the Linux filesystem at `~/.cache/amr_fleet_ros`. This avoids severe performance and file-locking problems when a WSL build writes thousands of generated files into a Windows or OneDrive mount.
@@ -88,6 +91,8 @@ Generated ROS build, install, and test artifacts are kept on the Linux filesyste
 - [Verification and validation plan](docs/verification/verification-plan.md)
 - [Simulation commissioning checklist](docs/commissioning/simulation-checklist.md)
 - [Gazebo baseline evidence](docs/commissioning/gazebo-baseline-evidence.md)
+- [Map management procedure](docs/commissioning/map-management.md)
+- [Navigation parameter engineering note](docs/commissioning/navigation-parameter-note.md)
 - [Delivery roadmap](docs/roadmap.md)
 
 ## License

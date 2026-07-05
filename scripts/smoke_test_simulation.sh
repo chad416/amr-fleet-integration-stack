@@ -6,18 +6,32 @@ ARTIFACT_ROOT="${AMR_ROS_ARTIFACT_ROOT:-${HOME}/.cache/amr_fleet_ros}"
 INSTALL_SETUP="${ARTIFACT_ROOT}/install/setup.bash"
 LOG_DIR="${ARTIFACT_ROOT}/smoke-logs/$(date -u +%Y%m%dT%H%M%SZ)"
 LAUNCH_PID=""
+GZ_WORLD_PROCESS_PATTERN="gz sim .*amr_simulation/worlds/factory.sdf"
+export ROS_DOMAIN_ID="${AMR_TEST_DOMAIN_ID:-42}"
 
 mkdir -p "${LOG_DIR}"
 
+stop_factory_gazebo_processes() {
+  pgrep -f "${GZ_WORLD_PROCESS_PATTERN}" >/dev/null 2>&1 || return 0
+  pkill -INT -f "${GZ_WORLD_PROCESS_PATTERN}" 2>/dev/null || true
+  sleep 2
+  pgrep -f "${GZ_WORLD_PROCESS_PATTERN}" >/dev/null 2>&1 || return 0
+  pkill -TERM -f "${GZ_WORLD_PROCESS_PATTERN}" 2>/dev/null || true
+  sleep 1
+  pgrep -f "${GZ_WORLD_PROCESS_PATTERN}" >/dev/null 2>&1 || return 0
+  pkill -KILL -f "${GZ_WORLD_PROCESS_PATTERN}" 2>/dev/null || true
+}
+
 cleanup() {
   local exit_code=$?
-  if [[ -n "${LAUNCH_PID}" ]] && kill -0 "${LAUNCH_PID}" 2>/dev/null; then
+  if [[ -n "${LAUNCH_PID}" ]]; then
     kill -INT -- "-${LAUNCH_PID}" 2>/dev/null || true
     sleep 3
     kill -TERM -- "-${LAUNCH_PID}" 2>/dev/null || true
     sleep 1
     kill -KILL -- "-${LAUNCH_PID}" 2>/dev/null || true
   fi
+  stop_factory_gazebo_processes
   if [[ ${exit_code} -ne 0 ]]; then
     echo "Simulation smoke test failed. Launch log: ${LOG_DIR}/simulation.log" >&2
     tail -120 "${LOG_DIR}/simulation.log" >&2 || true
@@ -55,6 +69,8 @@ wait_for() {
   done
 }
 
+stop_factory_gazebo_processes
+
 setsid ros2 launch amr_simulation simulation.launch.py headless:=true \
   >"${LOG_DIR}/simulation.log" 2>&1 &
 LAUNCH_PID=$!
@@ -65,9 +81,9 @@ wait_for "laser scan" timeout 3 ros2 topic echo /scan --once \
   --qos-reliability best_effort
 wait_for "IMU data" timeout 3 ros2 topic echo /imu/data --once \
   --qos-reliability best_effort
-wait_for "controller manager" ros2 service type /controller_manager/list_controllers
+wait_for "controller manager" timeout 3 ros2 service type /controller_manager/list_controllers
 
-CONTROLLERS="$(ros2 control list_controllers --controller-manager /controller_manager)"
+CONTROLLERS="$(timeout 15 ros2 control list_controllers --controller-manager /controller_manager)"
 grep -Eq '^joint_state_broadcaster[[:space:]]+joint_state_broadcaster/JointStateBroadcaster[[:space:]]+active' <<<"${CONTROLLERS}"
 grep -Eq '^base_controller[[:space:]]+diff_drive_controller/DiffDriveController[[:space:]]+active' <<<"${CONTROLLERS}"
 

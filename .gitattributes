@@ -12,3 +12,5 @@
 *.toml text eol=lf
 *.cfg text eol=lf
 *.txt text eol=lf
+*.pgm binary
+*.png binary

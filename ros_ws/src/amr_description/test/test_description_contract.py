@@ -60,10 +60,12 @@ def test_controller_geometry_matches_generated_model() -> None:
     radius = float(wheel_link.find('collision/geometry/cylinder').attrib['radius'])
 
     with (PACKAGE_ROOT / 'config' / 'controllers.yaml').open(encoding='utf-8') as stream:
-        controller_config = yaml.safe_load(stream)['base_controller']['ros__parameters']
+        full_config = yaml.safe_load(stream)
+    controller_config = full_config['base_controller']['ros__parameters']
 
     assert isclose(separation, controller_config['wheel_separation'], abs_tol=1e-9)
     assert isclose(radius, controller_config['wheel_radius'], abs_tol=1e-9)
+    assert full_config['controller_manager']['ros__parameters']['enforce_command_limits']
 
 
 def test_simulation_plugins_and_sensor_topics_are_declared() -> None:
