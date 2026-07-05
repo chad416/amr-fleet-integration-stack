@@ -1,0 +1,9 @@
+string station_id
+string robot_id
+string mission_id
+---
+bool granted
+amr_interfaces/StationLease lease
+string error_code
+string detail
+

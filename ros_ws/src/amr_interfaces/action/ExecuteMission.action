@@ -1,0 +1,18 @@
+# Goal
+string mission_id
+string[] station_ids
+string[] waypoint_names
+---
+# Result
+bool success
+string terminal_state
+string error_code
+string detail
+---
+# Feedback
+string state
+uint32 current_stop_index
+string current_station_id
+float32 progress_percent
+string detail
+

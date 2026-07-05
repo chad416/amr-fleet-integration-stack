@@ -1,0 +1,40 @@
+# Verification and Validation Plan
+
+Document ID: AMR-VVP-001  
+Revision: A
+
+## Verification levels
+
+| Level | Scope | Environment | Gate |
+|---|---|---|---|
+| L0 | Domain invariants and algorithms | Any Python host | Every commit |
+| L1 | ROS package build, lint, interface tests | ROS 2 Jazzy container | Every merge |
+| L2 | Single-AMR digital twin | Gazebo Harmonic | Simulation FAT |
+| L3 | Multi-AMR and station integration | Gazebo + PLC/OPC UA simulator | Integration FAT |
+| L4 | Physical AMR | Controlled test area | SAT readiness |
+
+## Initial traceability matrix
+
+| Test ID | Requirement | Description | Level |
+|---|---|---|---|
+| T-DIS-001 | URS-F-004 | Lowest-cost eligible robot is selected deterministically | L0 |
+| T-DIS-002 | URS-F-004 | Low-battery, stale, busy, degraded robots are rejected | L0 |
+| T-STA-001 | URS-F-006, URS-P-003 | Concurrent station requests cannot both acquire access | L0 |
+| T-STA-002 | URS-S-003 | Expired or mismatched lease cannot authorize docking | L0 |
+| T-MIS-001 | URS-F-003, URS-F-009 | Nominal mission phase sequence completes | L0 |
+| T-MIS-002 | URS-S-003 | Dock/transfer commands before access are rejected | L0 |
+| T-MIS-003 | URS-F-009 | Pause/resume/cancel respects lifecycle constraints | L0 |
+| T-NAV-001 | URS-F-005, URS-P-001 | Approved route success over 100 seeded trials | L2 |
+| T-REC-001 | URS-F-008, URS-P-002 | Blocked-path recovery succeeds within target | L2 |
+| T-LOC-001 | URS-F-002, URS-P-006 | Cold-start localization at surveyed checkpoints | L2/L4 |
+| T-OT-001 | URS-F-011 | OPC UA tag loss causes lease timeout and inhibits docking | L3 |
+| T-SAF-001 | URS-S-001, URS-S-002 | E-stop and reset/start separation | L4 |
+
+## Evidence rules
+
+- Automated results are saved as machine-readable JUnit XML in CI.
+- Simulation FAT records configuration revision, random seed, map revision, and software commit.
+- Timing claims include raw data, summary statistics, and host specifications.
+- Failed tests remain in the report with disposition; they are not silently removed.
+- Hardware SAT requires a witnessed checklist and photographs or video for physical controls.
+

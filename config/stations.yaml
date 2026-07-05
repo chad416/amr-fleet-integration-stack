@@ -1,0 +1,22 @@
+stations:
+  - id: station_infeed
+    waypoint: infeed_dock
+    interface: opcua
+    lease_seconds: 30.0
+    handshake:
+      request: AMR.EntryRequest
+      granted: Station.EntryGranted
+      docked: AMR.Docked
+      transfer_complete: Station.TransferComplete
+      release: AMR.Release
+  - id: station_outfeed
+    waypoint: outfeed_dock
+    interface: opcua
+    lease_seconds: 30.0
+    handshake:
+      request: AMR.EntryRequest
+      granted: Station.EntryGranted
+      docked: AMR.Docked
+      transfer_complete: Station.TransferComplete
+      release: AMR.Release
+

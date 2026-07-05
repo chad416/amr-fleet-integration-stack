@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amr-fleet-core"
+version = "0.1.0"
+description = "Transport-independent domain core for an industrial AMR fleet"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "AMR Fleet Integration Stack Contributors" }]
+
+[project.optional-dependencies]
+dev = [
+    "mypy==2.1.0",
+    "ruff==0.15.20",
+]
+
+[tool.setuptools]
+package-dir = {"" = "ros_ws/src/amr_fleet_core"}
+
+[tool.setuptools.packages.find]
+where = ["ros_ws/src/amr_fleet_core"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+packages = ["amr_fleet_core"]
+mypy_path = "ros_ws/src/amr_fleet_core"

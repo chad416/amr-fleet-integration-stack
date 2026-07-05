@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.venv/
+*.egg-info/
+
+# ROS 2 / colcon
+build/
+install/
+log/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Generated evidence and local runtime data
+tmp/
+artifacts/
+bags/
+maps/generated/
