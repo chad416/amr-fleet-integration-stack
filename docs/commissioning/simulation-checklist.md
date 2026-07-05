@@ -4,17 +4,17 @@ This is the controlled bring-up order for the Gazebo/Nav2 baseline. Items are ch
 
 ## Environment
 
-- [ ] Ubuntu 24.04 host or WSL2 environment recorded.
-- [ ] ROS 2 Jazzy package versions captured.
-- [ ] Gazebo Harmonic and `ros_gz` versions captured.
+- [x] Ubuntu 24.04 host or WSL2 environment recorded.
+- [x] ROS 2 Jazzy package versions captured.
+- [x] Gazebo Harmonic and `ros_gz` versions captured.
 - [ ] Repository commit and configuration checksum recorded.
 - [ ] Host CPU, RAM, and GPU recorded.
 
 ## Robot model and control
 
-- [ ] URDF/Xacro validates with no missing transforms.
+- [x] URDF/Xacro validates with no missing transforms.
 - [ ] Mass and inertia values are physically plausible and documented.
-- [ ] Wheel radius and separation match the model.
+- [x] Wheel radius and separation match the model.
 - [ ] Joint state and odometry rates meet configuration targets.
 - [ ] Velocity and acceleration limits are enforced.
 - [ ] Command timeout produces zero velocity.
@@ -51,4 +51,3 @@ This is the controlled bring-up order for the Gazebo/Nav2 baseline. Items are ch
 - [ ] 100-run mission benchmark meets the URS target.
 - [ ] Known deviations are recorded with owner and disposition.
 - [ ] FAT report is signed and archived under `artifacts/fat/<revision>/`.
-

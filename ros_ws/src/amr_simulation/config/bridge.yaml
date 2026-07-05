@@ -1,0 +1,29 @@
+- ros_topic_name: /clock
+  gz_topic_name: /clock
+  ros_type_name: rosgraph_msgs/msg/Clock
+  gz_type_name: gz.msgs.Clock
+  direction: GZ_TO_ROS
+  publisher_queue: 10
+  subscriber_queue: 10
+
+- ros_topic_name: /scan
+  gz_topic_name: /scan
+  ros_type_name: sensor_msgs/msg/LaserScan
+  gz_type_name: gz.msgs.LaserScan
+  direction: GZ_TO_ROS
+  lazy: false
+  publisher_queue: 10
+  subscriber_queue: 10
+  qos_profile: SENSOR_DATA
+  frame_id: lidar_link
+
+- ros_topic_name: /imu/data
+  gz_topic_name: /imu/data
+  ros_type_name: sensor_msgs/msg/Imu
+  gz_type_name: gz.msgs.IMU
+  direction: GZ_TO_ROS
+  lazy: false
+  publisher_queue: 20
+  subscriber_queue: 20
+  qos_profile: SENSOR_DATA
+  frame_id: imu_link

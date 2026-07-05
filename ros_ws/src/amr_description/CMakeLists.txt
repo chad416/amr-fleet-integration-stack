@@ -9,9 +9,13 @@ install(
 )
 
 if(BUILD_TESTING)
+  find_package(ament_cmake_pytest REQUIRED)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
+  ament_add_pytest_test(
+    description_contract
+    test/test_description_contract.py
+  )
 endif()
 
 ament_package()
-

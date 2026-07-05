@@ -25,8 +25,9 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | Deterministic robot dispatch | Implemented | Unit tests |
 | Exclusive station access lease | Implemented | Unit tests |
 | ROS 2 interfaces | Implemented and compiled | Colcon build evidence |
-| Differential-drive AMR model | Implemented; final Linux lint rerun pending | Xacro, controller configuration, static checks |
-| Nav2 and Gazebo integration | Planned | Commissioning backlog |
+| Differential-drive AMR model | Implemented and compiled | Xacro, controller configuration, Linux build |
+| Gazebo simulation baseline | Implemented and runtime accepted | Factory world, launch orchestration, bridge and motion smoke test |
+| Nav2 integration | Planned | Commissioning backlog |
 | PLC/OPC UA station handshake | Planned | Interface specification |
 | Fleet telemetry dashboards | Planned | Interface specification |
 | Physical AMR commissioning | Hardware-dependent | Commissioning checklist |
@@ -39,6 +40,8 @@ docs/                   Requirements, architecture, safety, V&V, commissioning
 ros_ws/src/
   amr_fleet_core/       Mission, dispatch, station access, telemetry domain
   amr_interfaces/       ROS 2 messages, services, and actions
+  amr_description/      Robot model and ros2_control configuration
+  amr_simulation/       Gazebo world, bridge and repeatable launch system
 ros_ws/src/amr_fleet_core/test/
                         Transport-independent verification suite
 ```
@@ -60,6 +63,7 @@ Bootstrap an Ubuntu 24.04 environment with:
 sudo bash scripts/bootstrap_ros2_jazzy.sh
 bash scripts/verify_ros2_environment.sh
 bash scripts/build_and_test_ros2.sh
+bash scripts/smoke_test_simulation.sh
 ```
 
 Generated ROS build, install, and test artifacts are kept on the Linux filesystem at `~/.cache/amr_fleet_ros`. This avoids severe performance and file-locking problems when a WSL build writes thousands of generated files into a Windows or OneDrive mount.
@@ -83,6 +87,7 @@ Generated ROS build, install, and test artifacts are kept on the Linux filesyste
 - [Mobile-operation risk analysis](docs/safety/mobile-operation-risk-analysis.md)
 - [Verification and validation plan](docs/verification/verification-plan.md)
 - [Simulation commissioning checklist](docs/commissioning/simulation-checklist.md)
+- [Gazebo baseline evidence](docs/commissioning/gazebo-baseline-evidence.md)
 - [Delivery roadmap](docs/roadmap.md)
 
 ## License

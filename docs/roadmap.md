@@ -14,14 +14,21 @@ Exit: all L0 tests pass and requirements traceability has no orphaned implemente
 
 - Differential-drive URDF/Xacro and Gazebo world
 - `ros2_control` differential-drive control
-- Lidar, odometry, TF, robot state publisher
+- Lidar, IMU, odometry, TF, and robot state publisher
+- Headless runtime acceptance with commanded motion
+
+Exit: repeatable world load, active controllers, live sensors, and verified motion
+in simulation.
+
+## Gate 2 - Autonomous navigation
+
 - SLAM Toolbox mapping and map procedure
 - Nav2 localization, planning, control, and recovery configuration
 - Lifecycle-managed bring-up
 
 Exit: repeatable mapping/localization plus approved waypoint mission in simulation.
 
-## Gate 2 - Fleet vertical slice
+## Gate 3 - Fleet vertical slice
 
 - ROS 2 adapter around the domain core
 - Remote mission API
@@ -31,7 +38,7 @@ Exit: repeatable mapping/localization plus approved waypoint mission in simulati
 
 Exit: 100-run single-robot mission benchmark and fault-recovery evidence.
 
-## Gate 3 - Industrial station integration
+## Gate 4 - Industrial station integration
 
 - OPC UA server simulator matching the material-handling handshake
 - Station bridge and lease reconciliation
@@ -40,7 +47,7 @@ Exit: 100-run single-robot mission benchmark and fault-recovery evidence.
 
 Exit: L3 integration FAT with zero station mutual-exclusion violations.
 
-## Gate 4 - Multi-robot fleet
+## Gate 5 - Multi-robot fleet
 
 - Two or more simulated robots with namespace isolation
 - Traffic and station resource coordination
@@ -49,7 +56,7 @@ Exit: L3 integration FAT with zero station mutual-exclusion violations.
 
 Exit: multi-robot mission KPI report with traceable failure analysis.
 
-## Gate 5 - Physical commissioning
+## Gate 6 - Physical commissioning
 
 - Hardware selection and approved electrical/mechanical design
 - Motor, encoder, sensor, battery, bumper, and independent E-stop integration
@@ -57,4 +64,3 @@ Exit: multi-robot mission KPI report with traceable failure analysis.
 - Simulation-versus-real comparison report
 
 Exit: witnessed SAT evidence. No safety certification claim is made without the required certified process and components.
-
