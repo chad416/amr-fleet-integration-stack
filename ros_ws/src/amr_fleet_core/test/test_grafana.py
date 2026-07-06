@@ -1,8 +1,8 @@
 """Verification of Grafana dashboard artifact generation."""
 
 import json
-from pathlib import Path
 import unittest
+from pathlib import Path
 
 from amr_fleet_core.grafana import build_grafana_dashboard, validate_grafana_dashboard
 

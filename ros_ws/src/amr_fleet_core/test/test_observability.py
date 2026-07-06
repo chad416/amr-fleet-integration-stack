@@ -4,8 +4,8 @@ import unittest
 
 from amr_fleet_core import (
     FleetService,
-    InMemoryTelemetrySink,
     InfluxLineProtocolExporter,
+    InMemoryTelemetrySink,
     MissionStop,
     NearestEligibleDispatcher,
     Pose2D,

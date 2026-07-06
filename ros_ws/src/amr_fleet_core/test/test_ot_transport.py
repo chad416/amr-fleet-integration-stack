@@ -3,8 +3,8 @@
 import json
 import unittest
 
-from amr_fleet_core.ot_transport import MqttStationCodec, OpcUaStationNodeSet
 from amr_fleet_core import StationLease
+from amr_fleet_core.ot_transport import MqttStationCodec, OpcUaStationNodeSet
 
 
 def lease() -> StationLease:

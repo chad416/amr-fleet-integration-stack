@@ -5,6 +5,7 @@ adapters call into this domain layer and translate its errors at the boundary.
 """
 
 from .alarms import FleetAlarm, FleetAlarmEvaluator
+from .api import ApiResponse, FleetApi, create_fleet_api
 from .charging import ChargeMissionRequest, ChargePolicy
 from .dispatch import NearestEligibleDispatcher
 from .errors import (
@@ -21,7 +22,6 @@ from .errors import (
 from .fault_campaign import FaultScenarioResult, campaign_summary, run_l0_fault_campaign
 from .fleet import FleetService
 from .grafana import build_grafana_dashboard, validate_grafana_dashboard
-from .api import ApiResponse, FleetApi, create_fleet_api
 from .http_api import FleetHttpApplication, create_server
 from .mission import Mission
 from .models import MissionState, MissionStop, Pose2D, RobotHealth, RobotSnapshot

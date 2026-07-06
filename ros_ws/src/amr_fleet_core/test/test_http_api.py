@@ -6,7 +6,6 @@ import threading
 import unittest
 
 from amr_fleet_core import create_fleet_api, create_server
-
 from test_api import mission_payload, robot_payload
 
 

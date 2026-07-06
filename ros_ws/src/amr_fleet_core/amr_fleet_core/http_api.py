@@ -73,11 +73,15 @@ class FleetHttpApplication:
             if command == "recovery/complete":
                 return self.api.complete_recovery(mission_id)
 
-        if method == "POST" and len(parts) == 3 and parts[0] == "robots":
-            if parts[2] == "telemetry":
-                payload = dict(payload)
-                payload.setdefault("robot_id", parts[1])
-                return self.api.update_robot(payload)
+        if (
+            method == "POST"
+            and len(parts) == 3
+            and parts[0] == "robots"
+            and parts[2] == "telemetry"
+        ):
+            payload = dict(payload)
+            payload.setdefault("robot_id", parts[1])
+            return self.api.update_robot(payload)
 
         return ApiResponse(
             False,

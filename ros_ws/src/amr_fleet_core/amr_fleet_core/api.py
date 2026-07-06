@@ -5,7 +5,7 @@ from __future__ import annotations
 import time
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Protocol
 
 from .alarms import FleetAlarmEvaluator
 from .dispatch import NearestEligibleDispatcher
@@ -20,8 +20,19 @@ from .telemetry import (
 )
 from .waypoints import WaypointCatalog
 
-
 Clock = Callable[[], float]
+
+
+class LeaseCommand(Protocol):
+    """Signature shared by mission operations guarded by a station lease."""
+
+    def __call__(
+        self,
+        mission_id: str,
+        lease_id: str,
+        *,
+        now: float,
+    ) -> None: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -287,7 +298,7 @@ class FleetApi:
         event_type: str,
         mission_id: str,
         payload: dict[str, Any],
-        command: Callable[[str, str], None],
+        command: LeaseCommand,
     ) -> ApiResponse:
         def execute() -> dict[str, Any]:
             command(
