@@ -12,6 +12,7 @@ class MissionState(str, Enum):
     DISPATCHED = "dispatched"
     NAVIGATING = "navigating"
     AWAITING_STATION = "awaiting_station"
+    RECOVERING = "recovering"
     DOCKING = "docking"
     TRANSFERRING = "transferring"
     PAUSED = "paused"

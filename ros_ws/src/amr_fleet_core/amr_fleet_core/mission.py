@@ -32,6 +32,8 @@ class Mission:
         self.station_lease_id: str | None = None
         self.failure_reason: str | None = None
         self._paused_from: MissionState | None = None
+        self._recovering_from: MissionState | None = None
+        self.recovery_attempts = 0
         self._events = [MissionEvent(0, None, MissionState.QUEUED, "mission submitted")]
 
     @property
@@ -106,6 +108,28 @@ class Mission:
         target = self._paused_from
         self._paused_from = None
         self._transition(target, "operator resume")
+
+    def start_recovery(self, reason: str) -> int:
+        if self.state not in {MissionState.NAVIGATING, MissionState.AWAITING_STATION}:
+            self._raise_invalid("start recovery for")
+        if not reason.strip():
+            raise ValueError("recovery reason must be non-empty")
+        self._recovering_from = self.state
+        self.station_lease_id = None
+        self.recovery_attempts += 1
+        self._transition(
+            MissionState.RECOVERING,
+            f"recovery attempt {self.recovery_attempts}: {reason}",
+        )
+        return self.recovery_attempts
+
+    def complete_recovery(self) -> None:
+        self._require(MissionState.RECOVERING)
+        if self._recovering_from is None:
+            raise InvalidTransition("recovering mission has no resumable state")
+        target = self._recovering_from
+        self._recovering_from = None
+        self._transition(target, "recovery complete; autonomous execution resumed")
 
     def cancel(self, reason: str) -> None:
         self._require_nonterminal("cancel")

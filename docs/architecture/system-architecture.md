@@ -20,7 +20,7 @@ flowchart LR
 ## Architectural boundaries
 
 1. **Domain core** owns missions, dispatch eligibility, station leases, and invariants. It contains no ROS imports.
-2. **ROS adapters** translate actions, services, topics, and lifecycle transitions into domain commands and events.
+2. **API adapters** translate HTTP, ROS actions, ROS services, topics, and lifecycle transitions into domain commands and events.
 3. **Robot autonomy** owns localization, planning, control, and bounded recovery through Nav2.
 4. **Hardware adapters** implement wheel, encoder, E-stop, bumper, and battery interfaces through `ros2_control` and diagnostic topics.
 5. **OT bridge** maps semantic station handshake states to OPC UA nodes or MQTT topics. Raw PLC tags do not leak into the domain model.
@@ -35,6 +35,8 @@ flowchart LR
 | Nav2 stack | Localization, planning, control, recovery | Lifecycle manager performs ordered shutdown |
 | OT bridge | Station handshake translation | Lease expires; docking/transfer is inhibited |
 | Telemetry exporter | Metrics and event export | Buffered loss; no motion impact |
+| Fleet HTTP API | Remote mission commands and telemetry snapshots | Rejects invalid commands without mutating the domain |
+| PLC simulator | Deterministic L3 station handshake tests | Restart clears grants; bridge inhibits docking until correlation is restored |
 
 ## Data ownership
 
@@ -49,6 +51,6 @@ flowchart LR
 - **Telemetry stale:** robot excluded from new dispatch.
 - **Fleet service unavailable:** robot completes its current safe segment or holds; it accepts no new mission.
 - **Station bridge unavailable:** no station access grant; robot waits at the approach waypoint.
+- **PLC heartbeat stale or restarted:** existing grant is not trusted for docking or transfer.
 - **Localization invalid:** navigation is canceled and the robot stops under the control-layer timeout.
 - **Primary range sensor unavailable:** return-home is permitted only when the configured alternate perception path is healthy and the risk analysis allows it.
-

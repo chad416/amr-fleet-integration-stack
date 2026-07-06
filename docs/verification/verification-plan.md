@@ -24,6 +24,11 @@ Revision: A
 | T-MIS-001 | URS-F-003, URS-F-009 | Nominal mission phase sequence completes | L0 |
 | T-MIS-002 | URS-S-003 | Dock/transfer commands before access are rejected | L0 |
 | T-MIS-003 | URS-F-009 | Pause/resume/cancel respects lifecycle constraints | L0 |
+| T-API-001 | URS-F-003, URS-F-007, URS-P-004 | JSON/HTTP mission API accepts remote commands and translates domain errors | L0 |
+| T-API-002 | URS-P-004 | 100 local API acknowledgements have p95 below 500 ms | L0 |
+| T-TEL-001 | URS-F-007, URS-P-005, URS-F-012 | Telemetry projection marks stale robots and preserves audit event sequence | L0 |
+| T-OBS-001 | URS-F-007 | Fleet snapshot and audit events export to Influx line protocol | L0 |
+| T-REC-000 | URS-F-008, URS-S-005 | Bounded recovery enters recovering, resumes safely, then fails after budget exhaustion | L0 |
 | T-SIM-001 | URS-S-004 | Controllers, sensors and bounded commanded motion pass headless acceptance | L2 |
 | T-MAP-001 | URS-F-001 | Versioned factory map is reproduced exactly from world collision geometry | L1 |
 | T-MAP-002 | URS-F-001 | SLAM Toolbox publishes `/map` before and after bounded commanded motion | L2 |
@@ -33,6 +38,7 @@ Revision: A
 | T-REC-001 | URS-F-008, URS-P-002 | Blocked-path recovery succeeds within target | L2 |
 | T-LOC-001 | URS-F-002, URS-P-006 | Cold-start localization at surveyed checkpoints | L2/L4 |
 | T-OT-001 | URS-F-011 | OPC UA tag loss causes lease timeout and inhibits docking | L3 |
+| T-OT-000 | URS-F-006, URS-F-011 | PLC simulator restart clears grants and station bridge inhibits stale docking | L0 |
 | T-SAF-001 | URS-S-001, URS-S-002 | E-stop and reset/start separation | L4 |
 
 ## Evidence rules
@@ -42,3 +48,12 @@ Revision: A
 - Timing claims include raw data, summary statistics, and host specifications.
 - Failed tests remain in the report with disposition; they are not silently removed.
 - Hardware SAT requires a witnessed checklist and photographs or video for physical controls.
+
+## Latest L0 evidence
+
+On 2026-07-06, the bundled Python runtime executed 33 L0 tests covering mission
+lifecycle, dispatch, station leases, JSON/HTTP API, telemetry freshness,
+observability export, bounded recovery and PLC bridge reconciliation. A
+100-run fleet API benchmark completed 100 station missions successfully and
+produced bounded recovery evidence where the third recovery request was rejected
+with `RecoveryLimitExceeded` and the mission ended in `failed`.

@@ -1,0 +1,19 @@
+{
+  "benchmark": {
+    "api_ack_max_ms": 0.5320000054780394,
+    "api_ack_p95_ms": 0.010100003419211134,
+    "completed": 100,
+    "events_recorded": 900,
+    "runs": 100,
+    "success_rate": 1.0
+  },
+  "generated_at": "2026-07-06T13:11:45.382141+00:00",
+  "recovery": {
+    "failure_reason": "recovery attempts exhausted: blocked after bounded recovery",
+    "final_state": "failed",
+    "first_attempt": 1,
+    "second_attempt": 2,
+    "third_attempt_accepted": false,
+    "third_attempt_error": "RecoveryLimitExceeded"
+  }
+}

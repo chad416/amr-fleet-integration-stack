@@ -50,5 +50,7 @@ class NearestEligibleDispatcher:
             key=lambda robot: (robot.pose.distance_to(first_stop.approach_pose), robot.robot_id),
         )
         if not ranked:
-            raise NoEligibleRobot("no robot satisfies health, freshness, battery, and availability")
+            raise NoEligibleRobot(
+                "no robot satisfies health, freshness, battery, and availability"
+            )
         return ranked[0]

@@ -28,8 +28,10 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | Differential-drive AMR model | Implemented and compiled | Xacro, controller configuration, Linux build |
 | Gazebo simulation baseline | Implemented and runtime accepted | Factory world, launch orchestration, bridge and motion smoke test |
 | Nav2 integration | Implemented and runtime accepted | Versioned map, AMCL, planner, controller, collision monitor, command adapter and waypoint smoke test |
-| PLC/OPC UA station handshake | Planned | Interface specification |
-| Fleet telemetry dashboards | Planned | Interface specification |
+| Remote fleet mission API | Implemented and benchmarked | JSON/HTTP adapter, unit tests, 100-run benchmark |
+| Bounded recovery | Implemented at fleet/API layer | Recovery unit tests and benchmark evidence |
+| PLC/OPC UA station handshake | Core implemented | Station bridge, PLC simulator, lease reconciliation tests |
+| Fleet telemetry dashboards | Export core implemented | Telemetry projection and Influx line-protocol exporter |
 | Physical AMR commissioning | Hardware-dependent | Commissioning checklist |
 
 ## Repository map
@@ -45,6 +47,8 @@ ros_ws/src/
   amr_navigation/       Mapping, localization, Nav2 and versioned factory map
 ros_ws/src/amr_fleet_core/test/
                         Transport-independent verification suite
+scripts/benchmark_fleet_api.py
+                        100-run fleet API and recovery evidence benchmark
 ```
 
 ## Run the domain verification suite
@@ -67,6 +71,7 @@ bash scripts/build_and_test_ros2.sh
 bash scripts/smoke_test_simulation.sh
 bash scripts/smoke_test_mapping.sh
 bash scripts/smoke_test_navigation.sh
+python scripts/benchmark_fleet_api.py --runs 100
 ```
 
 Generated ROS build, install, and test artifacts are kept on the Linux filesystem at `~/.cache/amr_fleet_ros`. This avoids severe performance and file-locking problems when a WSL build writes thousands of generated files into a Windows or OneDrive mount.
@@ -79,6 +84,11 @@ Generated ROS build, install, and test artifacts are kept on the Linux filesyste
 - One station grants at most one active lease.
 - Terminal mission states cannot be reopened accidentally.
 - Dispatch decisions are deterministic for identical fleet state.
+- Remote mission commands return protocol-safe API responses.
+- Bounded recovery resumes only within its configured attempt budget and fails
+  safe when the budget is exhausted.
+- PLC station grants are accepted only when the fleet lease and PLC correlation
+  match and fresh heartbeat data is present.
 
 ## Documentation index
 

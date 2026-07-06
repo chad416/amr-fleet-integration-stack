@@ -15,6 +15,11 @@ stateDiagram-v2
     DOCKING --> TRANSFERRING: dock confirmed
     TRANSFERRING --> NAVIGATING: more stops
     TRANSFERRING --> COMPLETED: final transfer complete
+    NAVIGATING --> RECOVERING: bounded recovery started
+    AWAITING_STATION --> RECOVERING: station/replan recovery started
+    RECOVERING --> NAVIGATING: recovery complete
+    RECOVERING --> AWAITING_STATION: recovery complete at approach
+    RECOVERING --> FAILED: recovery budget exhausted
     NAVIGATING --> PAUSED: operator pause
     PAUSED --> NAVIGATING: operator resume
     QUEUED --> CANCELED
@@ -28,6 +33,7 @@ stateDiagram-v2
     AWAITING_STATION --> FAILED
     DOCKING --> FAILED
     TRANSFERRING --> FAILED
+    RECOVERING --> FAILED
 ```
 
 Terminal states are `COMPLETED`, `CANCELED`, and `FAILED`. No transition leaves a terminal state.
@@ -59,6 +65,31 @@ The lease ID is mandatory on docking and transfer events. This prevents a delaye
 - `MissionState.msg`: current mission projection.
 - `RobotState.msg`: dispatch and operational telemetry projection.
 
+## JSON/HTTP fleet API
+
+The HTTP adapter is intentionally thin; it translates JSON into the same domain
+commands used by ROS adapters and returns protocol-safe errors instead of
+leaking Python exceptions.
+
+| Method | Path | Purpose |
+|---|---|---|
+| `POST` | `/robots/{robot_id}/telemetry` | Update pose, health, battery, availability and telemetry timestamp |
+| `POST` | `/missions` | Submit an idempotent mission with one or more station stops |
+| `GET` | `/missions/{mission_id}` | Read mission state, event revision and current stop |
+| `POST` | `/missions/{mission_id}/dispatch` | Assign the nearest eligible robot |
+| `POST` | `/missions/{mission_id}/start` | Mark robot execution accepted |
+| `POST` | `/missions/{mission_id}/arrive` | Mark current station approach reached |
+| `POST` | `/missions/{mission_id}/station-access` | Request an exclusive station lease |
+| `POST` | `/missions/{mission_id}/dock/start` | Start docking with a correlated lease ID |
+| `POST` | `/missions/{mission_id}/dock/confirm` | Confirm docked state with the same lease ID |
+| `POST` | `/missions/{mission_id}/transfer/complete` | Complete transfer and release the lease |
+| `POST` | `/missions/{mission_id}/pause` | Pause a navigating or station-waiting mission |
+| `POST` | `/missions/{mission_id}/resume` | Resume to the pre-pause phase |
+| `POST` | `/missions/{mission_id}/cancel` | Cancel and release robot/station resources |
+| `POST` | `/missions/{mission_id}/recovery/start` | Begin a bounded recovery attempt |
+| `POST` | `/missions/{mission_id}/recovery/complete` | Return from recovery to the resumable phase |
+| `GET` | `/telemetry` | Read fleet projection and immutable audit events |
+
 ## Error categories
 
 | Code family | Meaning | Retry policy |
@@ -68,3 +99,9 @@ The lease ID is mandatory on docking and transfer events. This prevents a delaye
 | `STATION_*` | Busy, unknown, stale lease, or bridge unavailable | Bounded retry at approach |
 | `NAV_*` | Planning, control, localization, or recovery failure | Nav2 bounded recovery then fail/hold |
 
+## Observability projection
+
+Fleet telemetry is projected as a read-only snapshot containing robot freshness,
+mission state/revision, active station leases and API audit events. The current
+exporter renders this projection as InfluxDB line protocol for later Grafana
+dashboards. Observability code never calls domain commands.

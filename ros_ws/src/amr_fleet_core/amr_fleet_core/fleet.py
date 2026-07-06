@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from .dispatch import NearestEligibleDispatcher
-from .errors import DuplicateMissionConflict, NotFound
+from .errors import DuplicateMissionConflict, NotFound, RecoveryLimitExceeded
 from .mission import Mission
 from .models import MissionStop, RobotSnapshot
 from .station import StationAccessManager, StationLease
@@ -14,9 +14,14 @@ class FleetService:
         self,
         dispatcher: NearestEligibleDispatcher,
         station_access: StationAccessManager,
+        *,
+        recovery_max_attempts: int = 3,
     ) -> None:
+        if recovery_max_attempts <= 0:
+            raise ValueError("recovery_max_attempts must be positive")
         self._dispatcher = dispatcher
         self._station_access = station_access
+        self._recovery_max_attempts = recovery_max_attempts
         self._robots: dict[str, RobotSnapshot] = {}
         self._missions: dict[str, Mission] = {}
         self._active_mission_by_robot: dict[str, str] = {}
@@ -44,6 +49,18 @@ class FleetService:
             return self._missions[mission_id]
         except KeyError as error:
             raise NotFound(f"unknown mission: {mission_id}") from error
+
+    def robots(self) -> tuple[RobotSnapshot, ...]:
+        return tuple(sorted(self._robots.values(), key=lambda robot: robot.robot_id))
+
+    def missions(self) -> tuple[Mission, ...]:
+        return tuple(sorted(self._missions.values(), key=lambda mission: mission.mission_id))
+
+    def active_mission_by_robot(self) -> dict[str, str]:
+        return dict(self._active_mission_by_robot)
+
+    def active_station_leases(self, *, now: float) -> tuple[StationLease, ...]:
+        return self._station_access.active_leases(now=now)
 
     def dispatch(self, mission_id: str, *, now: float) -> str:
         mission = self.mission(mission_id)
@@ -100,6 +117,21 @@ class FleetService:
 
     def resume(self, mission_id: str) -> None:
         self.mission(mission_id).resume()
+
+    def begin_recovery(self, mission_id: str, reason: str, *, now: float) -> int:
+        mission = self.mission(mission_id)
+        if mission.recovery_attempts >= self._recovery_max_attempts:
+            self._release_lease_if_present(mission, now=now)
+            mission.fail(f"recovery attempts exhausted: {reason}")
+            self._release_robot(mission)
+            raise RecoveryLimitExceeded(
+                f"mission {mission_id} exhausted {self._recovery_max_attempts} recovery attempts"
+            )
+        self._release_lease_if_present(mission, now=now)
+        return mission.start_recovery(reason)
+
+    def complete_recovery(self, mission_id: str) -> None:
+        self.mission(mission_id).complete_recovery()
 
     def cancel(self, mission_id: str, reason: str, *, now: float) -> None:
         mission = self.mission(mission_id)

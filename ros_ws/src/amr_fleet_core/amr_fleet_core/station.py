@@ -97,6 +97,16 @@ class StationAccessManager:
         del self._leases[station_id]
         return True
 
+    def active_leases(self, *, now: float) -> tuple[StationLease, ...]:
+        expired = [
+            station_id
+            for station_id, lease in self._leases.items()
+            if not lease.active_at(now)
+        ]
+        for station_id in expired:
+            del self._leases[station_id]
+        return tuple(sorted(self._leases.values(), key=lambda lease: lease.station_id))
+
     def _require_station(self, station_id: str) -> None:
         if station_id not in self._station_ids:
             raise NotFound(f"unknown station: {station_id}")

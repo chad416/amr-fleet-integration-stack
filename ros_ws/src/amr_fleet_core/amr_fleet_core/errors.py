@@ -27,3 +27,7 @@ class LeaseInvalid(DomainError):
 
 class DuplicateMissionConflict(DomainError):
     """A mission ID was reused with a different immutable payload."""
+
+
+class RecoveryLimitExceeded(DomainError):
+    """A mission exhausted its bounded autonomous recovery budget."""

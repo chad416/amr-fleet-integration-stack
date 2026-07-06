@@ -31,21 +31,31 @@ Exit: repeatable mapping/localization plus approved waypoint mission in simulati
 ## Gate 3 - Fleet vertical slice
 
 - ROS 2 adapter around the domain core
-- Remote mission API
+- Remote mission API **implemented in JSON/HTTP form**
 - Named waypoints and docking approach poses
-- Robot heartbeat, battery, pose, mission, and health telemetry
-- Pause, resume, cancel, and bounded recovery
+- Robot heartbeat, battery, pose, mission, and health telemetry **implemented
+  as read-only projections and API audit events**
+- Pause, resume, cancel, and bounded recovery **implemented in the domain/API**
 
 Exit: 100-run single-robot mission benchmark and fault-recovery evidence.
+
+Status: the transport-independent API/recovery/telemetry slice has exit
+evidence. Gate 3 remains open until the live ROS 2 action/service/topic adapter
+is integrated and accepted in Jazzy.
 
 ## Gate 4 - Industrial station integration
 
 - OPC UA server simulator matching the material-handling handshake
-- Station bridge and lease reconciliation
-- InfluxDB/Grafana dashboards and alarm events
+- Station bridge and lease reconciliation **implemented at the domain boundary**
+- InfluxDB/Grafana dashboards and alarm events **implemented as line-protocol
+  exporter and audit events**
 - Network loss, stale message, and PLC restart tests
 
 Exit: L3 integration FAT with zero station mutual-exclusion violations.
+
+Status: PLC handshake simulation, stale heartbeat inhibition, restart behavior
+and Influx export are covered by L0 tests. Gate 4 remains open until the actual
+OPC UA/MQTT transport and Grafana runtime are deployed.
 
 ## Gate 5 - Multi-robot fleet
 
