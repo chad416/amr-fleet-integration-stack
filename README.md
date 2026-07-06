@@ -35,7 +35,7 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | Bounded recovery | Implemented at fleet/API layer | Recovery unit tests and benchmark evidence |
 | PLC/OPC UA station handshake | Core implemented | Station bridge, PLC simulator, lease reconciliation tests |
 | OPC UA/MQTT station transport | Implemented at codec boundary | Correlated OPC UA writes and MQTT command/status tests |
-| Fleet telemetry dashboards | Export core implemented | Telemetry projection, alarm evaluation and Influx line-protocol exporter |
+| Fleet telemetry dashboards | Dashboard artifact implemented | Telemetry projection, alarm evaluation, Influx exporter and Grafana JSON |
 | Physical AMR commissioning | Hardware-dependent | Commissioning checklist |
 
 ## Repository map
@@ -56,6 +56,7 @@ scripts/benchmark_fleet_api.py
                         100-run fleet API and recovery evidence benchmark
 scripts/run_fleet_fault_campaign.py
                         L0 stale-telemetry, station-busy, PLC and recovery campaign
+dashboards/grafana/     Importable Grafana dashboard JSON artifacts
 ```
 
 ## Run the domain verification suite

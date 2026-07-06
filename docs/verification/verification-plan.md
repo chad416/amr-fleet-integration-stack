@@ -31,6 +31,7 @@ Revision: A
 | T-FLT-002 | URS-F-004, URS-F-008, URS-F-011, URS-F-012 | L0 fault campaign verifies stale robot, station busy, PLC stale heartbeat, recovery exhaustion and batch dispatch scenarios | L0 |
 | T-TEL-001 | URS-F-007, URS-P-005, URS-F-012 | Telemetry projection marks stale robots and preserves audit event sequence | L0 |
 | T-OBS-001 | URS-F-007 | Fleet snapshot and audit events export to Influx line protocol | L0 |
+| T-OBS-002 | URS-F-007 | Grafana dashboard artifact contains robot, mission, lease, recovery and event panels | L0 |
 | T-ALM-001 | URS-F-007, URS-P-005 | Stale telemetry, critical battery and mission failures generate dashboard alarms | L0 |
 | T-WAY-001 | URS-F-005 | Named station waypoints resolve to immutable mission stops | L0 |
 | T-REC-000 | URS-F-008, URS-S-005 | Bounded recovery enters recovering, resumes safely, then fails after budget exhaustion | L0 |

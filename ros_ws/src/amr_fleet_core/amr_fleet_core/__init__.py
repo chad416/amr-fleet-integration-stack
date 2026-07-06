@@ -18,6 +18,7 @@ from .errors import (
 )
 from .fault_campaign import FaultScenarioResult, campaign_summary, run_l0_fault_campaign
 from .fleet import FleetService
+from .grafana import build_grafana_dashboard, validate_grafana_dashboard
 from .api import ApiResponse, FleetApi, create_fleet_api
 from .http_api import FleetHttpApplication, create_server
 from .mission import Mission
@@ -76,9 +77,11 @@ __all__ = [
     "TelemetryEvent",
     "Waypoint",
     "WaypointCatalog",
+    "build_grafana_dashboard",
     "campaign_summary",
     "create_fleet_api",
     "create_server",
     "project_fleet_telemetry",
     "run_l0_fault_campaign",
+    "validate_grafana_dashboard",
 ]
