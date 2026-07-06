@@ -26,6 +26,7 @@ Revision: A
 | T-MIS-003 | URS-F-009 | Pause/resume/cancel respects lifecycle constraints | L0 |
 | T-API-001 | URS-F-003, URS-F-007, URS-P-004 | JSON/HTTP mission API accepts remote commands and translates domain errors | L0 |
 | T-API-002 | URS-P-004 | 100 local API acknowledgements have p95 below 500 ms | L0 |
+| T-ROS-001 | URS-F-003, URS-F-007, URS-F-009 | ROS fleet adapter maps ExecuteMission goals to validated domain mission payloads | L0 |
 | T-FLT-001 | URS-F-004 | Batch dispatch skips busy robots and assigns queued missions to eligible idle robots | L0 |
 | T-FLT-002 | URS-F-004, URS-F-008, URS-F-011, URS-F-012 | L0 fault campaign verifies stale robot, station busy, PLC stale heartbeat, recovery exhaustion and batch dispatch scenarios | L0 |
 | T-TEL-001 | URS-F-007, URS-P-005, URS-F-012 | Telemetry projection marks stale robots and preserves audit event sequence | L0 |

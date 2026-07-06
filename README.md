@@ -26,6 +26,7 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | Batch fleet dispatch | Implemented | Multi-robot unit tests |
 | Exclusive station access lease | Implemented | Unit tests |
 | ROS 2 interfaces | Implemented and compiled | Colcon build evidence |
+| ROS 2 fleet adapter | Implemented, pending Jazzy runtime acceptance | Action/service/topic node, launch/config, adapter contract tests |
 | Differential-drive AMR model | Implemented and compiled | Xacro, controller configuration, Linux build |
 | Gazebo simulation baseline | Implemented and runtime accepted | Factory world, launch orchestration, bridge and motion smoke test |
 | Nav2 integration | Implemented and runtime accepted | Versioned map, AMCL, planner, controller, collision monitor, command adapter and waypoint smoke test |
@@ -43,6 +44,7 @@ config/                 Fleet, station, and deployment configuration
 docs/                   Requirements, architecture, safety, V&V, commissioning
 ros_ws/src/
   amr_fleet_core/       Mission, dispatch, station access, telemetry domain
+  amr_fleet_adapter/    ROS 2 fleet action/service/topic adapter
   amr_interfaces/       ROS 2 messages, services, and actions
   amr_description/      Robot model and ros2_control configuration
   amr_simulation/       Gazebo world, bridge and repeatable launch system

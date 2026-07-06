@@ -5,7 +5,7 @@ Last audited: 2026-07-06
 ## Executive status
 
 Overall completion against the complete AMR and fleet-integration project defined
-in the portfolio PDF: **62%**.
+in the portfolio PDF: **66%**.
 
 This percentage includes simulation, navigation, OT integration, verification,
 portfolio evidence, and physical-hardware commissioning. The reusable software and
@@ -20,12 +20,12 @@ policy and station/PLC reconciliation core.
 | Workstream | Completion | Evidence / remaining work |
 | --- | ---: | --- |
 | Requirements, architecture, safety and verification planning | 85% | URS, ADRs, risk analysis, V&V plan, interface specification, commissioning checklist, map-management and navigation notes exist; hardware SAT procedures remain. |
-| Fleet-domain logic and ROS interfaces | 84% | Mission lifecycle, deterministic dispatch, batch dispatch, named waypoint resolution, station leases, bounded recovery, telemetry/alarm projections, JSON/HTTP fleet API and typed ROS interfaces are implemented and tested; the live ROS fleet adapter still needs runtime integration. |
+| Fleet-domain logic and ROS interfaces | 88% | Mission lifecycle, deterministic dispatch, batch dispatch, named waypoint resolution, station leases, bounded recovery, telemetry/alarm projections, JSON/HTTP fleet API, ROS fleet adapter package and typed ROS interfaces are implemented and tested at the contract level; Jazzy runtime acceptance remains. |
 | Robot model and control description | 75% | Xacro robot, sensors, controllers and description launch compile; controller activation, sensor delivery and motion pass runtime acceptance. Detailed dynamics characterization remains. |
 | Gazebo simulation | 65% | Deterministic factory world, entity spawn, controller sequencing, bridges and headless smoke acceptance are implemented. Scenario matrix, GUI validation, fault injection and soak testing remain. |
 | Navigation, mapping and localization | 60% | Deterministic map generation, SLAM runtime smoke, AMCL/Nav2 localization, named waypoints, collision-monitor chain, command adapter and a verified headless waypoint goal are implemented. Route matrix, recovery coverage and localization KPI campaigns remain. |
 | PLC/OT integration, telemetry and dashboard | 50% | Station/handshake contracts, PLC simulator, lease reconciliation, alarm evaluation and Influx line-protocol exporter are implemented and tested; live OPC UA/MQTT transport and Grafana runtime deployment remain. |
-| FAT, fault injection and performance benchmarks | 45% | Verification strategy, 41 L0 tests, a five-scenario L0 fault campaign, headless motion/mapping/navigation acceptance and a 100-run fleet API benchmark exist; broader simulation KPI reports remain. |
+| FAT, fault injection and performance benchmarks | 47% | Verification strategy, 44 L0 tests, a five-scenario L0 fault campaign, headless motion/mapping/navigation acceptance and a 100-run fleet API benchmark exist; broader simulation KPI reports remain. |
 | Physical AMR commissioning | 0% | Hardware integration, calibration, safety validation and factory-floor trials have not started. |
 | Portfolio/demo evidence | 10% | Architecture, commissioning notes and benchmark evidence exist; final diagrams, dashboard captures, demonstration video and measured result summary remain. |
 
@@ -52,7 +52,11 @@ policy and station/PLC reconciliation core.
 - L0 fault campaign on 2026-07-06: 5/5 scenarios passed, covering stale robot
   telemetry rejection, station busy rejection, stale PLC heartbeat inhibition,
   recovery exhaustion and batch fleet dispatch.
-- Domain behavior test result: 41 tests passed.
+- ROS fleet adapter contract tests on 2026-07-06: 3 tests passed, covering
+  ExecuteMission goal-to-domain payload translation, goal validation and
+  protocol-safe progress/result mapping.
+- Domain behavior test result: 44 tests passed across fleet core and adapter
+  contract suites.
 
 ## PDF deliverable traceability
 
@@ -75,8 +79,9 @@ policy and station/PLC reconciliation core.
 The project has completed **Gate 0: engineering baseline**, **Gate 1:
 single-AMR digital twin** and the **Gate 2 autonomous-navigation baseline**.
 The core/API/recovery/telemetry portion of **Gate 3** is implemented and
-benchmarked, while the live ROS fleet adapter remains before Gate 3 can be
-closed without qualification.
+benchmarked. The ROS fleet adapter package is implemented with action, service,
+robot-state topic and mission-state topic wiring, but Gate 3 remains open until
+Jazzy runtime acceptance is run in a reachable ROS 2 environment.
 
 1. Finish Gate 3: live ROS fleet adapter, action/service bridge and telemetry
    topic publication in Jazzy.

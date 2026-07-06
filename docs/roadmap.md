@@ -30,7 +30,7 @@ Exit: repeatable mapping/localization plus approved waypoint mission in simulati
 
 ## Gate 3 - Fleet vertical slice
 
-- ROS 2 adapter around the domain core
+- ROS 2 adapter around the domain core **implemented as `amr_fleet_adapter`**
 - Remote mission API **implemented in JSON/HTTP form**
 - Named waypoints and docking approach poses
 - Robot heartbeat, battery, pose, mission, and health telemetry **implemented
@@ -40,8 +40,9 @@ Exit: repeatable mapping/localization plus approved waypoint mission in simulati
 Exit: 100-run single-robot mission benchmark and fault-recovery evidence.
 
 Status: the transport-independent API/recovery/telemetry slice has exit
-evidence. Gate 3 remains open until the live ROS 2 action/service/topic adapter
-is integrated and accepted in Jazzy.
+evidence. The ROS 2 action/service/topic adapter package is implemented and
+covered by pure contract tests. Gate 3 remains open until the adapter is built
+and accepted in Jazzy with generated ROS interfaces.
 
 ## Gate 4 - Industrial station integration
 

@@ -65,6 +65,18 @@ The lease ID is mandatory on docking and transfer events. This prevents a delaye
 - `MissionState.msg`: current mission projection.
 - `RobotState.msg`: dispatch and operational telemetry projection.
 
+## ROS fleet adapter topics and endpoints
+
+The `amr_fleet_adapter` package exposes the domain core through ROS 2:
+
+| Type | Name | Purpose |
+|---|---|---|
+| Action | `fleet/execute_mission` | Translate a station/waypoint mission goal to a domain mission and dispatch/start it |
+| Service | `fleet/request_station_access` | Request a correlated station lease for the active mission |
+| Subscription | `fleet/robot_updates` | Ingest robot pose, battery, health and availability snapshots |
+| Publisher | `fleet/robot_states` | Publish fleet robot telemetry projection and active mission/fault codes |
+| Publisher | `fleet/mission_states` | Publish mission state, current station, lease and revision projection |
+
 ## JSON/HTTP fleet API
 
 The HTTP adapter is intentionally thin; it translates JSON into the same domain
