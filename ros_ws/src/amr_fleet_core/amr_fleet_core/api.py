@@ -7,6 +7,7 @@ from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from typing import Any
 
+from .alarms import FleetAlarmEvaluator
 from .dispatch import NearestEligibleDispatcher
 from .errors import DomainError
 from .fleet import FleetService
@@ -17,6 +18,7 @@ from .telemetry import (
     pose_to_dict,
     project_fleet_telemetry,
 )
+from .waypoints import WaypointCatalog
 
 
 Clock = Callable[[], float]
@@ -39,6 +41,8 @@ class FleetApi:
         telemetry_stale_after: float,
         clock: Clock | None = None,
         telemetry_sink: InMemoryTelemetrySink | None = None,
+        waypoint_catalog: WaypointCatalog | None = None,
+        alarm_evaluator: FleetAlarmEvaluator | None = None,
     ) -> None:
         if telemetry_stale_after <= 0.0:
             raise ValueError("telemetry_stale_after must be positive")
@@ -46,6 +50,8 @@ class FleetApi:
         self.telemetry_stale_after = telemetry_stale_after
         self._clock = clock or time.monotonic
         self.telemetry_sink = telemetry_sink or InMemoryTelemetrySink()
+        self.waypoint_catalog = waypoint_catalog
+        self.alarm_evaluator = alarm_evaluator or FleetAlarmEvaluator()
 
     def update_robot(self, payload: dict[str, Any]) -> ApiResponse:
         return self._execute(
@@ -166,12 +172,14 @@ class FleetApi:
             now=timestamp,
             telemetry_stale_after=self.telemetry_stale_after,
         )
+        alarms = self.alarm_evaluator.evaluate(snapshot)
         return ApiResponse(
             True,
             200,
             {
                 "fleet": snapshot.to_dict(),
                 "events": self.telemetry_sink.as_dicts(),
+                "alarms": [alarm.to_dict() for alarm in alarms],
             },
         )
 
@@ -193,7 +201,7 @@ class FleetApi:
         stops_payload = payload.get("stops")
         if not isinstance(stops_payload, list):
             raise ValueError("stops must be a list")
-        stops = tuple(_stop_from_payload(stop) for stop in stops_payload)
+        stops = tuple(self._stop_from_payload(stop) for stop in stops_payload)
         mission = self.service.submit_mission(mission_id, stops)
         return {"mission": mission_to_dict(mission)}
 
@@ -236,6 +244,26 @@ class FleetApi:
             now=self._time_from_payload(payload),
         )
         return {"mission": mission_to_dict(self.service.mission(mission_id)), "attempt": attempt}
+
+    def _stop_from_payload(self, payload: Any) -> MissionStop:
+        if not isinstance(payload, dict):
+            raise ValueError("each stop must be an object")
+        station_id = _require_string(payload, "station_id")
+        waypoint = _require_string(payload, "waypoint")
+        approach_pose = payload.get("approach_pose")
+        if approach_pose is None:
+            if self.waypoint_catalog is None:
+                raise ValueError(
+                    "approach_pose is required when no waypoint catalog is configured"
+                )
+            return self.waypoint_catalog.resolve(station_id, waypoint)
+        if not isinstance(approach_pose, dict):
+            raise ValueError("approach_pose must be an object")
+        return MissionStop(
+            station_id=station_id,
+            waypoint=waypoint,
+            approach_pose=_pose_from_payload(approach_pose),
+        )
 
     def _lease_command(
         self,
@@ -329,6 +357,7 @@ def create_fleet_api(
     reject_degraded: bool = True,
     recovery_max_attempts: int = 3,
     clock: Clock | None = None,
+    waypoint_catalog: WaypointCatalog | None = None,
 ) -> FleetApi:
     station_ids_set = set(station_ids)
     dispatcher = NearestEligibleDispatcher(
@@ -345,6 +374,7 @@ def create_fleet_api(
         service,
         telemetry_stale_after=telemetry_stale_after,
         clock=clock,
+        waypoint_catalog=waypoint_catalog,
     )
 
 
@@ -384,16 +414,6 @@ def robot_to_dict(robot: RobotSnapshot) -> dict[str, Any]:
         "available": robot.available,
         "telemetry_at": robot.telemetry_at,
     }
-
-
-def _stop_from_payload(payload: Any) -> MissionStop:
-    if not isinstance(payload, dict):
-        raise ValueError("each stop must be an object")
-    return MissionStop(
-        station_id=_require_string(payload, "station_id"),
-        waypoint=_require_string(payload, "waypoint"),
-        approach_pose=_pose_from_payload(_require_dict(payload, "approach_pose")),
-    )
 
 
 def _pose_from_payload(payload: dict[str, Any]) -> Pose2D:

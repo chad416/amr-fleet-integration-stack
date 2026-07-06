@@ -4,6 +4,7 @@ This package intentionally has no ROS imports. ROS, HTTP, OPC UA, and MQTT
 adapters call into this domain layer and translate its errors at the boundary.
 """
 
+from .alarms import FleetAlarm, FleetAlarmEvaluator
 from .dispatch import NearestEligibleDispatcher
 from .errors import (
     DomainError,
@@ -31,12 +32,15 @@ from .telemetry import (
     TelemetryEvent,
     project_fleet_telemetry,
 )
+from .waypoints import Waypoint, WaypointCatalog
 
 __all__ = [
     "ApiResponse",
     "DomainError",
     "DuplicateMissionConflict",
     "FleetApi",
+    "FleetAlarm",
+    "FleetAlarmEvaluator",
     "FleetService",
     "FleetHttpApplication",
     "FleetTelemetrySnapshot",
@@ -64,6 +68,8 @@ __all__ = [
     "StationLease",
     "StationPlcSnapshot",
     "TelemetryEvent",
+    "Waypoint",
+    "WaypointCatalog",
     "create_fleet_api",
     "create_server",
     "project_fleet_telemetry",

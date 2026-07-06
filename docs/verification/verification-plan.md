@@ -28,6 +28,8 @@ Revision: A
 | T-API-002 | URS-P-004 | 100 local API acknowledgements have p95 below 500 ms | L0 |
 | T-TEL-001 | URS-F-007, URS-P-005, URS-F-012 | Telemetry projection marks stale robots and preserves audit event sequence | L0 |
 | T-OBS-001 | URS-F-007 | Fleet snapshot and audit events export to Influx line protocol | L0 |
+| T-ALM-001 | URS-F-007, URS-P-005 | Stale telemetry, critical battery and mission failures generate dashboard alarms | L0 |
+| T-WAY-001 | URS-F-005 | Named station waypoints resolve to immutable mission stops | L0 |
 | T-REC-000 | URS-F-008, URS-S-005 | Bounded recovery enters recovering, resumes safely, then fails after budget exhaustion | L0 |
 | T-SIM-001 | URS-S-004 | Controllers, sensors and bounded commanded motion pass headless acceptance | L2 |
 | T-MAP-001 | URS-F-001 | Versioned factory map is reproduced exactly from world collision geometry | L1 |
@@ -51,9 +53,10 @@ Revision: A
 
 ## Latest L0 evidence
 
-On 2026-07-06, the bundled Python runtime executed 33 L0 tests covering mission
-lifecycle, dispatch, station leases, JSON/HTTP API, telemetry freshness,
-observability export, bounded recovery and PLC bridge reconciliation. A
+On 2026-07-06, the bundled Python runtime executed 37 L0 tests covering mission
+lifecycle, dispatch, named waypoints, station leases, JSON/HTTP API, telemetry
+freshness, dashboard alarms, observability export, bounded recovery and PLC
+bridge reconciliation. A
 100-run fleet API benchmark completed 100 station missions successfully and
 produced bounded recovery evidence where the third recovery request was rejected
 with `RecoveryLimitExceeded` and the mission ended in `failed`.

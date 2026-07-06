@@ -67,8 +67,10 @@ class FleetApiTests(unittest.TestCase):
         done = self.api.complete_transfer("mission-api-001", {"lease_id": lease_id, "now": 105.0})
 
         self.assertEqual(done.body["mission"]["state"], MissionState.COMPLETED.value)
+        self.assertTrue(self.api.update_robot(robot_payload(105.0)).ok)
         telemetry = self.api.telemetry(now=105.0)
         self.assertEqual(telemetry.body["fleet"]["missions"][0]["state"], "completed")
+        self.assertEqual(telemetry.body["alarms"], [])
         self.assertEqual(
             [event["sequence"] for event in telemetry.body["events"]],
             list(range(len(telemetry.body["events"]))),

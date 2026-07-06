@@ -71,6 +71,11 @@ The HTTP adapter is intentionally thin; it translates JSON into the same domain
 commands used by ROS adapters and returns protocol-safe errors instead of
 leaking Python exceptions.
 
+Mission stops may either include an explicit `approach_pose` or reference a
+configured station/waypoint pair from the named waypoint catalog. This allows WMS
+or operator clients to submit stable business-level targets without hard-coding
+map coordinates in every request.
+
 | Method | Path | Purpose |
 |---|---|---|
 | `POST` | `/robots/{robot_id}/telemetry` | Update pose, health, battery, availability and telemetry timestamp |
@@ -102,6 +107,6 @@ leaking Python exceptions.
 ## Observability projection
 
 Fleet telemetry is projected as a read-only snapshot containing robot freshness,
-mission state/revision, active station leases and API audit events. The current
-exporter renders this projection as InfluxDB line protocol for later Grafana
-dashboards. Observability code never calls domain commands.
+mission state/revision, active station leases, evaluated alarms and API audit
+events. The current exporter renders this projection as InfluxDB line protocol
+for later Grafana dashboards. Observability code never calls domain commands.

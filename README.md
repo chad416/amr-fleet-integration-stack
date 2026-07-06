@@ -29,9 +29,10 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | Gazebo simulation baseline | Implemented and runtime accepted | Factory world, launch orchestration, bridge and motion smoke test |
 | Nav2 integration | Implemented and runtime accepted | Versioned map, AMCL, planner, controller, collision monitor, command adapter and waypoint smoke test |
 | Remote fleet mission API | Implemented and benchmarked | JSON/HTTP adapter, unit tests, 100-run benchmark |
+| Named station waypoints | Implemented | Waypoint catalog and API named-stop tests |
 | Bounded recovery | Implemented at fleet/API layer | Recovery unit tests and benchmark evidence |
 | PLC/OPC UA station handshake | Core implemented | Station bridge, PLC simulator, lease reconciliation tests |
-| Fleet telemetry dashboards | Export core implemented | Telemetry projection and Influx line-protocol exporter |
+| Fleet telemetry dashboards | Export core implemented | Telemetry projection, alarm evaluation and Influx line-protocol exporter |
 | Physical AMR commissioning | Hardware-dependent | Commissioning checklist |
 
 ## Repository map
@@ -85,8 +86,11 @@ Generated ROS build, install, and test artifacts are kept on the Linux filesyste
 - Terminal mission states cannot be reopened accidentally.
 - Dispatch decisions are deterministic for identical fleet state.
 - Remote mission commands return protocol-safe API responses.
+- Named station waypoints resolve to immutable approach poses at the fleet
+  boundary.
 - Bounded recovery resumes only within its configured attempt budget and fails
   safe when the budget is exhausted.
+- Dashboard alarms are derived from read-only telemetry snapshots.
 - PLC station grants are accepted only when the fleet lease and PLC correlation
   match and fresh heartbeat data is present.
 
