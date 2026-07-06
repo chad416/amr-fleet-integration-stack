@@ -1,0 +1,16 @@
+{
+  "campaign": {
+    "failed": 0,
+    "passed": 5,
+    "scenario_ids": [
+      "L0-FAULT-STALE-ROBOT",
+      "L0-FAULT-STATION-BUSY",
+      "L0-FAULT-PLC-STALE",
+      "L0-FAULT-RECOVERY-EXHAUSTED",
+      "L0-FLEET-BATCH-DISPATCH"
+    ],
+    "scenarios": 5,
+    "success_rate": 1.0
+  },
+  "generated_at": "2026-07-06T13:31:32.438481+00:00"
+}

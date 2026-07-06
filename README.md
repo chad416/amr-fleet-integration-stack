@@ -51,6 +51,8 @@ ros_ws/src/amr_fleet_core/test/
                         Transport-independent verification suite
 scripts/benchmark_fleet_api.py
                         100-run fleet API and recovery evidence benchmark
+scripts/run_fleet_fault_campaign.py
+                        L0 stale-telemetry, station-busy, PLC and recovery campaign
 ```
 
 ## Run the domain verification suite
@@ -74,6 +76,7 @@ bash scripts/smoke_test_simulation.sh
 bash scripts/smoke_test_mapping.sh
 bash scripts/smoke_test_navigation.sh
 python scripts/benchmark_fleet_api.py --runs 100
+python scripts/run_fleet_fault_campaign.py
 ```
 
 Generated ROS build, install, and test artifacts are kept on the Linux filesystem at `~/.cache/amr_fleet_ros`. This avoids severe performance and file-locking problems when a WSL build writes thousands of generated files into a Windows or OneDrive mount.

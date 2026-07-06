@@ -16,6 +16,7 @@ from .errors import (
     RecoveryLimitExceeded,
     StationBusy,
 )
+from .fault_campaign import FaultScenarioResult, campaign_summary, run_l0_fault_campaign
 from .fleet import FleetService
 from .api import ApiResponse, FleetApi, create_fleet_api
 from .http_api import FleetHttpApplication, create_server
@@ -42,6 +43,7 @@ __all__ = [
     "FleetAlarm",
     "FleetAlarmEvaluator",
     "FleetService",
+    "FaultScenarioResult",
     "FleetHttpApplication",
     "FleetTelemetrySnapshot",
     "InvalidTransition",
@@ -70,7 +72,9 @@ __all__ = [
     "TelemetryEvent",
     "Waypoint",
     "WaypointCatalog",
+    "campaign_summary",
     "create_fleet_api",
     "create_server",
     "project_fleet_telemetry",
+    "run_l0_fault_campaign",
 ]

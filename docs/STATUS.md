@@ -5,7 +5,7 @@ Last audited: 2026-07-06
 ## Executive status
 
 Overall completion against the complete AMR and fleet-integration project defined
-in the portfolio PDF: **60%**.
+in the portfolio PDF: **62%**.
 
 This percentage includes simulation, navigation, OT integration, verification,
 portfolio evidence, and physical-hardware commissioning. The reusable software and
@@ -25,7 +25,7 @@ policy and station/PLC reconciliation core.
 | Gazebo simulation | 65% | Deterministic factory world, entity spawn, controller sequencing, bridges and headless smoke acceptance are implemented. Scenario matrix, GUI validation, fault injection and soak testing remain. |
 | Navigation, mapping and localization | 60% | Deterministic map generation, SLAM runtime smoke, AMCL/Nav2 localization, named waypoints, collision-monitor chain, command adapter and a verified headless waypoint goal are implemented. Route matrix, recovery coverage and localization KPI campaigns remain. |
 | PLC/OT integration, telemetry and dashboard | 50% | Station/handshake contracts, PLC simulator, lease reconciliation, alarm evaluation and Influx line-protocol exporter are implemented and tested; live OPC UA/MQTT transport and Grafana runtime deployment remain. |
-| FAT, fault injection and performance benchmarks | 40% | Verification strategy, 40 L0 tests, headless motion/mapping/navigation acceptance and a 100-run fleet API benchmark exist; broader fault campaigns and KPI reports remain. |
+| FAT, fault injection and performance benchmarks | 45% | Verification strategy, 41 L0 tests, a five-scenario L0 fault campaign, headless motion/mapping/navigation acceptance and a 100-run fleet API benchmark exist; broader simulation KPI reports remain. |
 | Physical AMR commissioning | 0% | Hardware integration, calibration, safety validation and factory-floor trials have not started. |
 | Portfolio/demo evidence | 10% | Architecture, commissioning notes and benchmark evidence exist; final diagrams, dashboard captures, demonstration video and measured result summary remain. |
 
@@ -33,7 +33,7 @@ policy and station/PLC reconciliation core.
 
 - Windows quality gate from the previous baseline: Ruff passed, strict mypy passed,
   19 domain tests passed, and four XML/Xacro documents parsed successfully.
-- Bundled-Python L0 gate on 2026-07-06: 40 domain/API/OT/telemetry tests passed,
+- Bundled-Python L0 gate on 2026-07-06: 41 domain/API/OT/telemetry tests passed,
   Python bytecode compilation passed, and no edited Python line exceeds 99
   characters.
 - Ubuntu 24.04 / ROS 2 Jazzy quality gate: `amr_description`, `amr_fleet_core`,
@@ -49,7 +49,10 @@ policy and station/PLC reconciliation core.
 - Fleet API benchmark on 2026-07-06: 100/100 single-robot station missions
   completed; in-process API acknowledgement p95 was 0.010 ms and max was
   0.532 ms; bounded recovery exhausted safely into `failed` after two attempts.
-- Domain behavior test result: 40 tests passed.
+- L0 fault campaign on 2026-07-06: 5/5 scenarios passed, covering stale robot
+  telemetry rejection, station busy rejection, stale PLC heartbeat inhibition,
+  recovery exhaustion and batch fleet dispatch.
+- Domain behavior test result: 41 tests passed.
 
 ## PDF deliverable traceability
 
