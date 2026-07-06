@@ -5,7 +5,7 @@ Last audited: 2026-07-06
 ## Executive status
 
 Overall completion against the complete AMR and fleet-integration project defined
-in the portfolio PDF: **72%**.
+in the portfolio PDF: **75%**.
 
 This percentage includes simulation, navigation, OT integration, verification,
 portfolio evidence, and physical-hardware commissioning. The reusable software and
@@ -22,10 +22,10 @@ policy and station/PLC reconciliation core.
 | Requirements, architecture, safety and verification planning | 85% | URS, ADRs, risk analysis, V&V plan, interface specification, commissioning checklist, map-management and navigation notes exist; hardware SAT procedures remain. |
 | Fleet-domain logic and ROS interfaces | 88% | Mission lifecycle, deterministic dispatch, batch dispatch, named waypoint resolution, station leases, bounded recovery, telemetry/alarm projections, JSON/HTTP fleet API, ROS fleet adapter package and typed ROS interfaces are implemented and tested at the contract level; Jazzy runtime acceptance remains. |
 | Robot model and control description | 75% | Xacro robot, sensors, controllers and description launch compile; controller activation, sensor delivery and motion pass runtime acceptance. Detailed dynamics characterization remains. |
-| Gazebo simulation | 65% | Deterministic factory world, entity spawn, controller sequencing, bridges and headless smoke acceptance are implemented. Scenario matrix, GUI validation, fault injection and soak testing remain. |
+| Gazebo simulation | 72% | Deterministic factory world, entity spawn, controller sequencing, bridges, headless smoke acceptance and two-robot namespace/spawn scaffold are implemented. Multi-robot Gazebo runtime acceptance, traffic scenarios and soak testing remain. |
 | Navigation, mapping and localization | 60% | Deterministic map generation, SLAM runtime smoke, AMCL/Nav2 localization, named waypoints, collision-monitor chain, command adapter and a verified headless waypoint goal are implemented. Route matrix, recovery coverage and localization KPI campaigns remain. |
 | PLC/OT integration, telemetry and dashboard | 65% | Station/handshake contracts, PLC simulator, lease reconciliation, OPC UA write/snapshot codec, MQTT command/status codec, alarm evaluation, Influx line-protocol exporter and importable Grafana dashboard JSON are implemented and tested; live server/client deployment and Grafana runtime remain. |
-| FAT, fault injection and performance benchmarks | 52% | Verification strategy, 50 L0 tests, a five-scenario L0 fault campaign, headless motion/mapping/navigation acceptance and a 100-run fleet API benchmark exist; broader simulation KPI reports remain. |
+| FAT, fault injection and performance benchmarks | 54% | Verification strategy, 50 L0 tests, a five-scenario L0 fault campaign, static multi-robot simulation contract validation, headless motion/mapping/navigation acceptance and a 100-run fleet API benchmark exist; broader simulation KPI reports remain. |
 | Physical AMR commissioning | 0% | Hardware integration, calibration, safety validation and factory-floor trials have not started. |
 | Portfolio/demo evidence | 10% | Architecture, commissioning notes and benchmark evidence exist; final diagrams, dashboard captures, demonstration video and measured result summary remain. |
 
@@ -55,6 +55,9 @@ policy and station/PLC reconciliation core.
 - ROS fleet adapter contract tests on 2026-07-06: 3 tests passed, covering
   ExecuteMission goal-to-domain payload translation, goal validation and
   protocol-safe progress/result mapping.
+- Multi-robot simulation static validation on 2026-07-06: two robot IDs,
+  namespaces, Gazebo entity names, frame prefixes and namespaced robot
+  description topics are configured without collisions.
 - Domain behavior test result: 50 tests passed across fleet core and adapter
   contract suites.
 
@@ -69,6 +72,7 @@ policy and station/PLC reconciliation core.
 | Obstacle avoidance and recovery | Nav2 collision-monitor chain exists; fleet/API bounded recovery state machine implemented; blocked-path simulation campaign remains |
 | Remote mission dispatch | JSON/HTTP fleet API implemented and tested; live ROS fleet adapter remains |
 | Multi-robot coordination | Batch dispatch excludes busy robots and assigns remaining eligible fleet deterministically; multi-robot Gazebo traffic testing remains |
+| Multi-robot simulation | Namespaced two-AMR launch/config scaffold implemented; Gazebo runtime acceptance remains |
 | Fleet telemetry and Grafana | Telemetry projection, dashboard alarms, audit events, Influx line-protocol exporter and importable Grafana dashboard JSON implemented; Grafana runtime deployment remains |
 | PLC-style station handshake | Contract, state logic, PLC simulator, lease reconciliation and OPC UA/MQTT transport codecs implemented; live server/client deployment remains |
 | Repeatable simulation and fault injection | Repeatable single-AMR runtime baseline accepted; 100-run API benchmark and PLC stale/restart tests implemented; broader simulation fault scenarios remain |

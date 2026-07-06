@@ -30,6 +30,7 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | Differential-drive AMR model | Implemented and compiled | Xacro, controller configuration, Linux build |
 | Gazebo simulation baseline | Implemented and runtime accepted | Factory world, launch orchestration, bridge and motion smoke test |
 | Nav2 integration | Implemented and runtime accepted | Versioned map, AMCL, planner, controller, collision monitor, command adapter and waypoint smoke test |
+| Multi-robot simulation scaffold | Implemented, pending Gazebo runtime acceptance | Namespaced two-robot launch/config and static contract checks |
 | Remote fleet mission API | Implemented and benchmarked | JSON/HTTP adapter, unit tests, 100-run benchmark |
 | Named station waypoints | Implemented | Waypoint catalog and API named-stop tests |
 | Bounded recovery | Implemented at fleet/API layer | Recovery unit tests and benchmark evidence |

@@ -16,6 +16,10 @@ if(BUILD_TESTING)
     simulation_contract
     test/test_simulation_contract.py
   )
+  ament_add_pytest_test(
+    multi_robot_contract
+    test/test_multi_robot_contract.py
+  )
 endif()
 
 ament_package()

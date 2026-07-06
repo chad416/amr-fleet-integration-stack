@@ -62,7 +62,7 @@ and Grafana runtime are deployed.
 
 ## Gate 5 - Multi-robot fleet
 
-- Two or more simulated robots with namespace isolation
+- Two or more simulated robots with namespace isolation **scaffold implemented**
 - Traffic and station resource coordination
 - Charge mission policy and battery-aware allocation
 - Load and soak testing
@@ -70,8 +70,9 @@ and Grafana runtime are deployed.
 Exit: multi-robot mission KPI report with traceable failure analysis.
 
 Status: deterministic batch dispatch across multiple eligible robots is covered
-at L0. Gate 5 remains open until multi-robot Gazebo traffic, charging policy and
-soak testing are implemented.
+at L0, and the two-robot Gazebo namespace/spawn scaffold is present. Gate 5
+remains open until multi-robot Gazebo runtime traffic, charging policy and soak
+testing are implemented.
 
 ## Gate 6 - Physical commissioning
 

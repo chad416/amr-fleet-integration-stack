@@ -1,0 +1,19 @@
+robots:
+  - id: amr_01
+    namespace: /amr_01
+    entity_name: amr_01
+    frame_prefix: amr_01/
+    spawn:
+      x: -3.5
+      y: 0.8
+      z: 0.03
+      yaw: 0.0
+  - id: amr_02
+    namespace: /amr_02
+    entity_name: amr_02
+    frame_prefix: amr_02/
+    spawn:
+      x: -3.5
+      y: -0.8
+      z: 0.03
+      yaw: 0.0

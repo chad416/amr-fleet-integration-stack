@@ -36,6 +36,7 @@ Revision: A
 | T-WAY-001 | URS-F-005 | Named station waypoints resolve to immutable mission stops | L0 |
 | T-REC-000 | URS-F-008, URS-S-005 | Bounded recovery enters recovering, resumes safely, then fails after budget exhaustion | L0 |
 | T-SIM-001 | URS-S-004 | Controllers, sensors and bounded commanded motion pass headless acceptance | L2 |
+| T-SIM-002 | URS-F-004 | Two-AMR simulation launch/config uses unique namespaces, entities, frame prefixes and spawn poses | L1 |
 | T-MAP-001 | URS-F-001 | Versioned factory map is reproduced exactly from world collision geometry | L1 |
 | T-MAP-002 | URS-F-001 | SLAM Toolbox publishes `/map` before and after bounded commanded motion | L2 |
 | T-CMD-001 | URS-S-004 | Command adapter rejects non-finite input and clamps model limits | L1 |
