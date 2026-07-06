@@ -39,6 +39,9 @@ class FleetHttpApplication:
         if method == "POST" and parts == ["missions"]:
             return self.api.submit_mission(payload)
 
+        if method == "POST" and parts == ["dispatch"]:
+            return self.api.dispatch_all(payload)
+
         if method == "GET" and len(parts) == 2 and parts[0] == "missions":
             return self.api.mission(parts[1])
 

@@ -80,6 +80,7 @@ map coordinates in every request.
 |---|---|---|
 | `POST` | `/robots/{robot_id}/telemetry` | Update pose, health, battery, availability and telemetry timestamp |
 | `POST` | `/missions` | Submit an idempotent mission with one or more station stops |
+| `POST` | `/dispatch` | Batch-dispatch queued missions across the eligible idle fleet |
 | `GET` | `/missions/{mission_id}` | Read mission state, event revision and current stop |
 | `POST` | `/missions/{mission_id}/dispatch` | Assign the nearest eligible robot |
 | `POST` | `/missions/{mission_id}/start` | Mark robot execution accepted |

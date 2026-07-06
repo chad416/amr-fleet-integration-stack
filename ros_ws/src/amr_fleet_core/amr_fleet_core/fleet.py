@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from .dispatch import NearestEligibleDispatcher
-from .errors import DuplicateMissionConflict, NotFound, RecoveryLimitExceeded
+from .errors import DuplicateMissionConflict, NoEligibleRobot, NotFound, RecoveryLimitExceeded
 from .mission import Mission
-from .models import MissionStop, RobotSnapshot
+from .models import MissionState, MissionStop, RobotSnapshot
 from .station import StationAccessManager, StationLease
 
 
@@ -73,6 +73,18 @@ class FleetService:
         mission.assign(robot.robot_id)
         self._active_mission_by_robot[robot.robot_id] = mission_id
         return robot.robot_id
+
+    def dispatch_all(self, *, now: float) -> tuple[tuple[str, str], ...]:
+        assignments: list[tuple[str, str]] = []
+        for mission in self.missions():
+            if mission.state is not MissionState.QUEUED:
+                continue
+            try:
+                robot_id = self.dispatch(mission.mission_id, now=now)
+            except NoEligibleRobot:
+                break
+            assignments.append((mission.mission_id, robot_id))
+        return tuple(assignments)
 
     def start(self, mission_id: str) -> None:
         self.mission(mission_id).start()

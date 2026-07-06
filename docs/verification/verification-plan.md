@@ -26,6 +26,7 @@ Revision: A
 | T-MIS-003 | URS-F-009 | Pause/resume/cancel respects lifecycle constraints | L0 |
 | T-API-001 | URS-F-003, URS-F-007, URS-P-004 | JSON/HTTP mission API accepts remote commands and translates domain errors | L0 |
 | T-API-002 | URS-P-004 | 100 local API acknowledgements have p95 below 500 ms | L0 |
+| T-FLT-001 | URS-F-004 | Batch dispatch skips busy robots and assigns queued missions to eligible idle robots | L0 |
 | T-TEL-001 | URS-F-007, URS-P-005, URS-F-012 | Telemetry projection marks stale robots and preserves audit event sequence | L0 |
 | T-OBS-001 | URS-F-007 | Fleet snapshot and audit events export to Influx line protocol | L0 |
 | T-ALM-001 | URS-F-007, URS-P-005 | Stale telemetry, critical battery and mission failures generate dashboard alarms | L0 |
@@ -53,8 +54,8 @@ Revision: A
 
 ## Latest L0 evidence
 
-On 2026-07-06, the bundled Python runtime executed 37 L0 tests covering mission
-lifecycle, dispatch, named waypoints, station leases, JSON/HTTP API, telemetry
+On 2026-07-06, the bundled Python runtime executed 40 L0 tests covering mission
+lifecycle, dispatch, batch dispatch, named waypoints, station leases, JSON/HTTP API, telemetry
 freshness, dashboard alarms, observability export, bounded recovery and PLC
 bridge reconciliation. A
 100-run fleet API benchmark completed 100 station missions successfully and

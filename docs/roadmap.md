@@ -66,6 +66,10 @@ OPC UA/MQTT transport and Grafana runtime are deployed.
 
 Exit: multi-robot mission KPI report with traceable failure analysis.
 
+Status: deterministic batch dispatch across multiple eligible robots is covered
+at L0. Gate 5 remains open until multi-robot Gazebo traffic, charging policy and
+soak testing are implemented.
+
 ## Gate 6 - Physical commissioning
 
 - Hardware selection and approved electrical/mechanical design

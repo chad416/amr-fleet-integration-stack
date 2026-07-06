@@ -42,6 +42,20 @@ class HttpApiTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(body["mission"]["state"], "dispatched")
 
+    def test_http_boundary_accepts_batch_dispatch(self) -> None:
+        self.assertEqual(
+            self._post("/robots/amr-01/telemetry", robot_payload(100.0))[0],
+            200,
+        )
+        self.assertEqual(self._post("/missions", mission_payload("http-batch"))[0], 201)
+        status, body = self._post("/dispatch", {"now": 101.0})
+
+        self.assertEqual(status, 200)
+        self.assertEqual(
+            body["assignments"],
+            [{"mission_id": "http-batch", "robot_id": "amr-01"}],
+        )
+
     def _post(self, path: str, payload: dict) -> tuple[int, dict]:
         encoded = json.dumps(payload).encode("utf-8")
         connection = http.client.HTTPConnection(self.host, self.port, timeout=5.0)

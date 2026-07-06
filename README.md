@@ -23,6 +23,7 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 |---|---|---|
 | Mission lifecycle and invariants | Implemented | Unit tests |
 | Deterministic robot dispatch | Implemented | Unit tests |
+| Batch fleet dispatch | Implemented | Multi-robot unit tests |
 | Exclusive station access lease | Implemented | Unit tests |
 | ROS 2 interfaces | Implemented and compiled | Colcon build evidence |
 | Differential-drive AMR model | Implemented and compiled | Xacro, controller configuration, Linux build |
@@ -85,6 +86,8 @@ Generated ROS build, install, and test artifacts are kept on the Linux filesyste
 - One station grants at most one active lease.
 - Terminal mission states cannot be reopened accidentally.
 - Dispatch decisions are deterministic for identical fleet state.
+- Batch dispatch skips busy robots and assigns queued missions to eligible idle
+  robots.
 - Remote mission commands return protocol-safe API responses.
 - Named station waypoints resolve to immutable approach poses at the fleet
   boundary.

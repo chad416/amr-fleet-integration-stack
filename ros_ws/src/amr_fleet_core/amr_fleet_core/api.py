@@ -75,6 +75,13 @@ class FleetApi:
             payload={"mission_id": mission_id},
         )
 
+    def dispatch_all(self, payload: dict[str, Any]) -> ApiResponse:
+        return self._execute(
+            "fleet.dispatch_all",
+            lambda: self._dispatch_all(payload),
+            payload={"queued_only": True},
+        )
+
     def start(self, mission_id: str) -> ApiResponse:
         return self._mission_command(
             "mission.start",
@@ -211,6 +218,16 @@ class FleetApi:
             now=self._time_from_payload(payload),
         )
         return {"mission": mission_to_dict(self.service.mission(mission_id)), "robot_id": robot_id}
+
+    def _dispatch_all(self, payload: dict[str, Any]) -> dict[str, Any]:
+        assignments = self.service.dispatch_all(now=self._time_from_payload(payload))
+        return {
+            "assignments": [
+                {"mission_id": mission_id, "robot_id": robot_id}
+                for mission_id, robot_id in assignments
+            ],
+            "missions": [mission_to_dict(mission) for mission in self.service.missions()],
+        }
 
     def _request_station_access(self, mission_id: str, payload: dict[str, Any]) -> dict[str, Any]:
         lease = self.service.request_station_access(
