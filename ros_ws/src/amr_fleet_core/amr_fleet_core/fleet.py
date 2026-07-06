@@ -62,6 +62,11 @@ class FleetService:
     def active_station_leases(self, *, now: float) -> tuple[StationLease, ...]:
         return self._station_access.active_leases(now=now)
 
+    @property
+    def station_access(self) -> StationAccessManager:
+        """Expose the lease authority to trusted integration adapters."""
+        return self._station_access
+
     def dispatch(self, mission_id: str, *, now: float) -> str:
         mission = self.mission(mission_id)
         robot = self._dispatcher.select(

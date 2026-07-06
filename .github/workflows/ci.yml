@@ -19,10 +19,97 @@ jobs:
       - name: Install quality tools
         run: python -m pip install --disable-pip-version-check ".[dev]"
       - name: Lint
-        run: ruff check ros_ws/src/amr_fleet_core/amr_fleet_core ros_ws/src/amr_fleet_core/test
+        run: ruff check ros_ws scripts
       - name: Type check
         run: mypy ros_ws/src/amr_fleet_core/amr_fleet_core
       - name: Run unit tests
         run: python -m unittest discover -s ros_ws/src/amr_fleet_core/test -v
+      - name: Run ROS adapter contract tests
+        env:
+          PYTHONPATH: ros_ws/src/amr_fleet_adapter
+        run: python -m unittest discover -s ros_ws/src/amr_fleet_adapter/test -v
+      - name: Run simulation and navigation contract tests
+        run: >-
+          python -m pytest -q
+          ros_ws/src/amr_simulation/test
+          ros_ws/src/amr_navigation/test/test_navigation_contract.py
+          ros_ws/src/amr_navigation/test/test_autonomy_supervisor_contract.py
+      - name: Run complete software acceptance campaign
+        run: >-
+          python scripts/run_software_acceptance.py
+          --runs 100
+          --revision "${{ github.sha }}"
+          --output-dir artifacts/software-acceptance
       - name: Compile Python sources
-        run: python -m compileall -q ros_ws/src/amr_fleet_core/amr_fleet_core ros_ws/src/amr_fleet_core/test
+        run: python -m compileall -q ros_ws scripts
+      - name: Validate Compose deployment
+        run: docker compose config --quiet
+      - name: Build non-root runtime image
+        run: docker build --file deployment/Dockerfile --tag amr-fleet:${{ github.sha }} .
+      - name: Upload software acceptance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: software-acceptance-${{ github.sha }}
+          path: artifacts/software-acceptance/*.json
+          if-no-files-found: error
+
+  ros-jazzy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    container: ros:jazzy-ros-base-noble
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ROS software dependencies
+        shell: bash
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            python3-paho-mqtt \
+            python3-yaml \
+            ros-dev-tools \
+            ros-jazzy-gz-ros2-control \
+            ros-jazzy-navigation2 \
+            ros-jazzy-nav2-bringup \
+            ros-jazzy-ros-gz \
+            ros-jazzy-ros2-control \
+            ros-jazzy-ros2-controllers \
+            ros-jazzy-slam-toolbox \
+            ros-jazzy-xacro
+          rm -rf /var/lib/apt/lists/*
+      - name: Resolve ROS dependencies
+        shell: bash
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          rosdep update
+          rosdep install \
+            --from-paths ros_ws/src \
+            --ignore-src \
+            --rosdistro jazzy \
+            --skip-keys ament_python \
+            -y
+      - name: Build and test all ROS packages
+        shell: bash
+        env:
+          AMR_ROS_ARTIFACT_ROOT: ${{ github.workspace }}/artifacts/ros
+        run: bash scripts/build_and_test_ros2.sh
+      - name: Run single-AMR Gazebo smoke acceptance
+        shell: bash
+        env:
+          AMR_ROS_ARTIFACT_ROOT: ${{ github.workspace }}/artifacts/ros
+        run: timeout 240 bash scripts/smoke_test_simulation.sh
+      - name: Run multi-AMR Gazebo smoke acceptance
+        shell: bash
+        env:
+          AMR_ROS_ARTIFACT_ROOT: ${{ github.workspace }}/artifacts/ros
+        run: timeout 300 bash scripts/smoke_test_multi_robot.sh
+      - name: Upload ROS and Gazebo evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ros-jazzy-evidence-${{ github.sha }}
+          path: |
+            artifacts/ros/log/**
+            artifacts/ros/log-test/**
+            artifacts/ros/smoke-logs/**
+            artifacts/ros/multi-robot-logs/**
+          if-no-files-found: warn

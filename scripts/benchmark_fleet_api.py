@@ -13,7 +13,6 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CORE_SRC = REPO_ROOT / "ros_ws" / "src" / "amr_fleet_core"
 sys.path.insert(0, str(CORE_SRC))

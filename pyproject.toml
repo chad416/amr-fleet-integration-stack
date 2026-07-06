@@ -9,10 +9,19 @@ description = "Transport-independent domain core for an industrial AMR fleet"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
 authors = [{ name = "AMR Fleet Integration Stack Contributors" }]
+dependencies = [
+    "paho-mqtt==2.1.0",
+]
+
+[project.scripts]
+amr-fleet-server = "amr_fleet_core.runtime_server:main"
+amr-mqtt-plc-simulator = "amr_fleet_core.runtime_server:station_simulator_main"
 
 [project.optional-dependencies]
 dev = [
     "mypy==2.1.0",
+    "pytest==9.0.2",
+    "PyYAML==6.0.3",
     "ruff==0.15.20",
 ]
 

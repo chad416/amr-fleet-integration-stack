@@ -12,13 +12,18 @@ from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction, IncludeLaunchDescription
+from launch.actions import (
+    DeclareLaunchArgument,
+    GroupAction,
+    IncludeLaunchDescription,
+    RegisterEventHandler,
+)
 from launch.conditions import IfCondition, UnlessCondition
+from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration
 from launch_ros.actions import Node, PushRosNamespace
 from launch_ros.parameter_descriptions import ParameterValue
-
 
 ROBOTS = (
     {
@@ -49,13 +54,11 @@ def generate_launch_description() -> LaunchDescription:
 
     xacro_file = description_share / "urdf" / "amr.urdf.xacro"
     default_world = simulation_share / "worlds" / "factory.sdf"
-    bridge_config = simulation_share / "config" / "bridge.yaml"
+    bridge_config = simulation_share / "config" / "multi_robot_bridge.yaml"
     gz_launch = ros_gz_share / "launch" / "gz_sim.launch.py"
 
     headless = LaunchConfiguration("headless")
     world = LaunchConfiguration("world")
-    robot_description = ParameterValue(Command(["xacro ", str(xacro_file)]), value_type=str)
-
     actions = [
         DeclareLaunchArgument(
             "headless",
@@ -87,6 +90,17 @@ def generate_launch_description() -> LaunchDescription:
     ]
 
     for robot in ROBOTS:
+        robot_description = ParameterValue(
+            Command(
+                [
+                    "xacro ",
+                    str(xacro_file),
+                    " namespace:=",
+                    robot["namespace"],
+                ]
+            ),
+            value_type=str,
+        )
         actions.append(_robot_group(robot, robot_description))
 
     return LaunchDescription(actions)
@@ -94,6 +108,51 @@ def generate_launch_description() -> LaunchDescription:
 
 def _robot_group(robot: dict[str, str], robot_description: ParameterValue) -> GroupAction:
     namespace = robot["namespace"]
+    spawn_robot = Node(
+        package="ros_gz_sim",
+        executable="create",
+        name=f"spawn_{namespace}",
+        output="screen",
+        parameters=[
+            {
+                "world": "amr_factory",
+                "topic": f"/{namespace}/robot_description",
+                "name": robot["entity_name"],
+                "allow_renaming": False,
+                "x": robot["spawn_x"],
+                "y": robot["spawn_y"],
+                "z": robot["spawn_z"],
+                "Y": robot["spawn_yaw"],
+            }
+        ],
+    )
+    controller_manager = f"/{namespace}/controller_manager"
+    joint_state_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        name="joint_state_spawner",
+        arguments=[
+            "joint_state_broadcaster",
+            "--controller-manager",
+            controller_manager,
+            "--controller-manager-timeout",
+            "60",
+        ],
+        output="screen",
+    )
+    base_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        name="base_controller_spawner",
+        arguments=[
+            "base_controller",
+            "--controller-manager",
+            controller_manager,
+            "--controller-manager-timeout",
+            "60",
+        ],
+        output="screen",
+    )
     return GroupAction(
         [
             PushRosNamespace(namespace),
@@ -110,23 +169,15 @@ def _robot_group(robot: dict[str, str], robot_description: ParameterValue) -> Gr
                     }
                 ],
             ),
-            Node(
-                package="ros_gz_sim",
-                executable="create",
-                name=f"spawn_{namespace}",
-                output="screen",
-                parameters=[
-                    {
-                        "world": "amr_factory",
-                        "topic": f"/{namespace}/robot_description",
-                        "name": robot["entity_name"],
-                        "allow_renaming": False,
-                        "x": robot["spawn_x"],
-                        "y": robot["spawn_y"],
-                        "z": robot["spawn_z"],
-                        "Y": robot["spawn_yaw"],
-                    }
-                ],
+            spawn_robot,
+            RegisterEventHandler(
+                OnProcessExit(target_action=spawn_robot, on_exit=[joint_state_spawner])
+            ),
+            RegisterEventHandler(
+                OnProcessExit(
+                    target_action=joint_state_spawner,
+                    on_exit=[base_controller_spawner],
+                )
             ),
         ]
     )

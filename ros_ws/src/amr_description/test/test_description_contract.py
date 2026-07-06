@@ -14,13 +14,12 @@
 
 """Semantic contract tests for the generated AMR description."""
 
+import xml.etree.ElementTree as ET
 from math import isclose
 from pathlib import Path
-import xml.etree.ElementTree as ET
 
 import xacro
 import yaml
-
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 
@@ -75,7 +74,7 @@ def test_simulation_plugins_and_sensor_topics_are_declared() -> None:
 
     sensors = robot.findall('gazebo/sensor')
     topics = {sensor.findtext('topic') for sensor in sensors}
-    assert {'scan', 'imu/data'} <= topics
+    assert {'/scan', '/imu/data'} <= topics
 
     control = robot.find("ros2_control[@name='GazeboSystem']")
     assert control is not None

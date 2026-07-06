@@ -8,7 +8,6 @@ import json
 import sys
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CORE_SRC = REPO_ROOT / "ros_ws" / "src" / "amr_fleet_core"
 sys.path.insert(0, str(CORE_SRC))

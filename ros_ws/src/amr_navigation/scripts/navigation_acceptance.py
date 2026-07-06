@@ -16,12 +16,12 @@
 """Send a deterministic Nav2 goal and fail unless it succeeds."""
 
 import argparse
-from math import cos, sin
 import sys
+from math import cos, sin
 
+import rclpy
 from action_msgs.msg import GoalStatus
 from nav2_msgs.action import NavigateToPose
-import rclpy
 from rclpy.action import ActionClient
 from rclpy.node import Node
 from rclpy.parameter import Parameter

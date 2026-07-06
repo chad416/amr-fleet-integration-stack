@@ -10,7 +10,6 @@ from amr_fleet_adapter.adapter_contracts import (
     waypoint_catalog_from_json,
 )
 
-
 WAYPOINTS_JSON = """
 [
   {

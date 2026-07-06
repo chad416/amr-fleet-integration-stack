@@ -7,7 +7,9 @@ adapters call into this domain layer and translate its errors at the boundary.
 from .alarms import FleetAlarm, FleetAlarmEvaluator
 from .api import ApiResponse, FleetApi, create_fleet_api
 from .charging import ChargeMissionRequest, ChargePolicy
+from .coordination import RouteCoordinator, RouteReservation
 from .dispatch import NearestEligibleDispatcher
+from .docking import DockingCommand, DockingPhase, PseudoDockingController
 from .errors import (
     DomainError,
     DuplicateMissionConflict,
@@ -29,6 +31,13 @@ from .observability import InfluxLineProtocolExporter
 from .ot import PlcStationSimulator, StationBridge, StationBridgeDecision, StationPlcSnapshot
 from .ot_transport import MqttStationCodec, OpcUaStationNodeSet, OpcUaWrite
 from .station import StationAccessManager, StationLease
+from .supervision import (
+    AutonomyHealth,
+    AutonomyMode,
+    AutonomySupervisor,
+    MotionEnableInterlock,
+    SupervisionDecision,
+)
 from .telemetry import (
     FleetTelemetrySnapshot,
     InMemoryTelemetrySink,
@@ -42,10 +51,15 @@ from .waypoints import Waypoint, WaypointCatalog
 
 __all__ = [
     "ApiResponse",
+    "AutonomyHealth",
+    "AutonomyMode",
+    "AutonomySupervisor",
     "ChargeMissionRequest",
     "ChargePolicy",
     "DomainError",
     "DuplicateMissionConflict",
+    "DockingCommand",
+    "DockingPhase",
     "FleetApi",
     "FleetAlarm",
     "FleetAlarmEvaluator",
@@ -61,6 +75,7 @@ __all__ = [
     "MissionState",
     "MissionStop",
     "MissionTelemetry",
+    "MotionEnableInterlock",
     "MqttStationCodec",
     "NearestEligibleDispatcher",
     "NoEligibleRobot",
@@ -68,10 +83,13 @@ __all__ = [
     "OpcUaStationNodeSet",
     "OpcUaWrite",
     "Pose2D",
+    "PseudoDockingController",
     "RecoveryLimitExceeded",
     "RobotHealth",
     "RobotSnapshot",
     "RobotTelemetry",
+    "RouteCoordinator",
+    "RouteReservation",
     "PlcStationSimulator",
     "StationBridge",
     "StationBridgeDecision",
@@ -79,6 +97,7 @@ __all__ = [
     "StationBusy",
     "StationLease",
     "StationPlcSnapshot",
+    "SupervisionDecision",
     "TelemetryEvent",
     "TrafficConflict",
     "TrafficManager",

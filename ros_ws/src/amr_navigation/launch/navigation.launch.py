@@ -179,6 +179,14 @@ def generate_launch_description() -> LaunchDescription:
                 arguments=common_arguments,
             ),
             Node(
+                package='amr_navigation',
+                executable='autonomy_supervisor.py',
+                name='autonomy_supervisor',
+                output='screen',
+                parameters=[{'use_sim_time': True}],
+                arguments=common_arguments,
+            ),
+            Node(
                 package='nav2_lifecycle_manager',
                 executable='lifecycle_manager',
                 name='lifecycle_manager_navigation',

@@ -8,7 +8,6 @@ from pathlib import Path
 
 import yaml
 
-
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -47,3 +46,29 @@ def test_multi_robot_launch_uses_namespaced_robot_description_topics() -> None:
     assert "frame_prefix" in launch_text
     assert "/{namespace}/robot_description" in launch_text
     assert "allow_renaming" in launch_text
+    assert "controller_manager" in launch_text
+    assert "joint_state_broadcaster" in launch_text
+    assert "base_controller" in launch_text
+
+
+def test_multi_robot_bridge_isolates_sensor_topics_and_frames() -> None:
+    with (PACKAGE_ROOT / "config" / "multi_robot_bridge.yaml").open(
+        encoding="utf-8"
+    ) as stream:
+        bridges = yaml.safe_load(stream)
+
+    topics = {entry["ros_topic_name"] for entry in bridges}
+    assert {
+        "/clock",
+        "/amr_01/scan",
+        "/amr_01/imu/data",
+        "/amr_02/scan",
+        "/amr_02/imu/data",
+    } == topics
+    frames = {entry.get("frame_id") for entry in bridges if "frame_id" in entry}
+    assert frames == {
+        "amr_01/lidar_link",
+        "amr_01/imu_link",
+        "amr_02/lidar_link",
+        "amr_02/imu_link",
+    }

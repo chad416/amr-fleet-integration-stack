@@ -15,11 +15,10 @@
 """Static contract tests for map and Nav2 integration."""
 
 import importlib.util
-from pathlib import Path
 import sys
+from pathlib import Path
 
 import yaml
-
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 SIMULATION_ROOT = PACKAGE_ROOT.parent / 'amr_simulation'

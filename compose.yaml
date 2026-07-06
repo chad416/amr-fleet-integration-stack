@@ -1,0 +1,130 @@
+name: amr-fleet-integration
+
+services:
+  mqtt:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1883:1883"
+    volumes:
+      - ./deployment/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-h", "127.0.0.1", "-t", "$$SYS/broker/version", "-C", "1", "-W", "3"]
+      interval: 5s
+      timeout: 4s
+      retries: 12
+
+  influxdb:
+    image: influxdb:2.9.1
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUX_USERNAME:-amr_admin}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUX_PASSWORD:-change-this-demo-password}
+      DOCKER_INFLUXDB_INIT_ORG: amr
+      DOCKER_INFLUXDB_INIT_BUCKET: amr_fleet
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUX_TOKEN:-amr-demo-token-change-me}
+    volumes:
+      - influx-data:/var/lib/influxdb2
+    healthcheck:
+      test: ["CMD", "influx", "ping", "--host", "http://127.0.0.1:8086"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+
+  fleet-api:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      AMR_STATION_IDS: station_infeed,station_outfeed,charger
+      MQTT_HOST: mqtt
+      MQTT_PORT: "1883"
+      INFLUX_URL: http://influxdb:8086
+      INFLUX_ORG: amr
+      INFLUX_BUCKET: amr_fleet
+      INFLUX_TOKEN: ${INFLUX_TOKEN:-amr-demo-token-change-me}
+    depends_on:
+      mqtt:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2)"
+      interval: 5s
+      timeout: 4s
+      retries: 12
+
+  station-infeed:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile
+    command: ["amr-mqtt-plc-simulator"]
+    restart: unless-stopped
+    environment:
+      AMR_STATION_ID: station_infeed
+      MQTT_HOST: mqtt
+    depends_on:
+      mqtt:
+        condition: service_healthy
+
+  station-outfeed:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile
+    command: ["amr-mqtt-plc-simulator"]
+    restart: unless-stopped
+    environment:
+      AMR_STATION_ID: station_outfeed
+      MQTT_HOST: mqtt
+    depends_on:
+      mqtt:
+        condition: service_healthy
+
+  station-charger:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile
+    command: ["amr-mqtt-plc-simulator"]
+    restart: unless-stopped
+    environment:
+      AMR_STATION_ID: charger
+      MQTT_HOST: mqtt
+    depends_on:
+      mqtt:
+        condition: service_healthy
+
+  grafana:
+    image: grafana/grafana:12.4.0
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USERNAME:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-change-this-demo-password}
+      INFLUX_TOKEN: ${INFLUX_TOKEN:-amr-demo-token-change-me}
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./deployment/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./dashboards/grafana:/var/lib/grafana/dashboards:ro
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:3000/api/health | grep -q ok"]
+      interval: 5s
+      timeout: 4s
+      retries: 20
+
+volumes:
+  influx-data:
+  grafana-data:

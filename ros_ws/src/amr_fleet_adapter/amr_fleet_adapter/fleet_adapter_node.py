@@ -16,12 +16,11 @@ from .adapter_contracts import (
 
 try:
     import rclpy
-    from rclpy.action import ActionServer
-    from rclpy.node import Node
-
     from amr_interfaces.action import ExecuteMission
     from amr_interfaces.msg import MissionState, RobotState
     from amr_interfaces.srv import RequestStationAccess
+    from rclpy.action import ActionServer
+    from rclpy.node import Node
 except ImportError:  # pragma: no cover - exercised only on non-ROS developer hosts
     rclpy = None
     ActionServer = object

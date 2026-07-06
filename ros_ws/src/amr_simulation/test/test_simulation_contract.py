@@ -14,11 +14,10 @@
 
 """Static acceptance tests for deterministic simulation assets."""
 
-from pathlib import Path
 import xml.etree.ElementTree as ET
+from pathlib import Path
 
 import yaml
-
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 
