@@ -34,6 +34,7 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | Named station waypoints | Implemented | Waypoint catalog and API named-stop tests |
 | Bounded recovery | Implemented at fleet/API layer | Recovery unit tests and benchmark evidence |
 | PLC/OPC UA station handshake | Core implemented | Station bridge, PLC simulator, lease reconciliation tests |
+| OPC UA/MQTT station transport | Implemented at codec boundary | Correlated OPC UA writes and MQTT command/status tests |
 | Fleet telemetry dashboards | Export core implemented | Telemetry projection, alarm evaluation and Influx line-protocol exporter |
 | Physical AMR commissioning | Hardware-dependent | Commissioning checklist |
 

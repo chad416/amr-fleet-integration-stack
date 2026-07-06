@@ -48,15 +48,17 @@ and accepted in Jazzy with generated ROS interfaces.
 
 - OPC UA server simulator matching the material-handling handshake
 - Station bridge and lease reconciliation **implemented at the domain boundary**
+- OPC UA/MQTT transport codecs **implemented at the boundary**
 - InfluxDB/Grafana dashboards and alarm events **implemented as line-protocol
   exporter and audit events**
 - Network loss, stale message, and PLC restart tests
 
 Exit: L3 integration FAT with zero station mutual-exclusion violations.
 
-Status: PLC handshake simulation, stale heartbeat inhibition, restart behavior
-and Influx export are covered by L0 tests. Gate 4 remains open until the actual
-OPC UA/MQTT transport and Grafana runtime are deployed.
+Status: PLC handshake simulation, stale heartbeat inhibition, restart behavior,
+OPC UA/MQTT codecs and Influx export are covered by L0 tests. Gate 4 remains
+open until the actual OPC UA/MQTT server/client processes and Grafana runtime
+are deployed.
 
 ## Gate 5 - Multi-robot fleet
 

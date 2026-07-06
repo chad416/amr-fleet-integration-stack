@@ -44,6 +44,7 @@ Revision: A
 | T-LOC-001 | URS-F-002, URS-P-006 | Cold-start localization at surveyed checkpoints | L2/L4 |
 | T-OT-001 | URS-F-011 | OPC UA tag loss causes lease timeout and inhibits docking | L3 |
 | T-OT-000 | URS-F-006, URS-F-011 | PLC simulator restart clears grants and station bridge inhibits stale docking | L0 |
+| T-OT-002 | URS-F-011 | OPC UA write/snapshot mapper and MQTT command/status codec preserve station and lease correlation | L0 |
 | T-SAF-001 | URS-S-001, URS-S-002 | E-stop and reset/start separation | L4 |
 
 ## Evidence rules

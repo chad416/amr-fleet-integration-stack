@@ -51,6 +51,17 @@ Terminal states are `COMPLETED`, `CANCELED`, and `FAILED`. No transition leaves 
 
 The lease ID is mandatory on docking and transfer events. This prevents a delayed message from an earlier request being accepted for a later mission.
 
+## OPC UA and MQTT transport mapping
+
+The OT transport boundary keeps raw PLC node names and MQTT topics out of the
+mission domain. `OpcUaStationNodeSet` maps a station lease to correlated
+`EntryRequest`, `Release` and `LeaseId` writes, then projects PLC node values
+back into a `StationPlcSnapshot`. `MqttStationCodec` publishes deterministic
+JSON command payloads on `.../{station_id}/command` and decodes
+`.../{station_id}/status` payloads into the same snapshot model. The bridge then
+authorizes docking only when the snapshot is fresh, non-faulted and lease IDs
+match.
+
 ## Idempotency
 
 - Mission submission uses a client-provided mission ID. Repeated submission of the same ID and payload returns the existing mission.
