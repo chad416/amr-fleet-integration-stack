@@ -5,6 +5,7 @@ adapters call into this domain layer and translate its errors at the boundary.
 """
 
 from .alarms import FleetAlarm, FleetAlarmEvaluator
+from .charging import ChargeMissionRequest, ChargePolicy
 from .dispatch import NearestEligibleDispatcher
 from .errors import (
     DomainError,
@@ -15,6 +16,7 @@ from .errors import (
     NotFound,
     RecoveryLimitExceeded,
     StationBusy,
+    TrafficConflict,
 )
 from .fault_campaign import FaultScenarioResult, campaign_summary, run_l0_fault_campaign
 from .fleet import FleetService
@@ -35,10 +37,13 @@ from .telemetry import (
     TelemetryEvent,
     project_fleet_telemetry,
 )
+from .traffic import TrafficManager, TrafficReservation
 from .waypoints import Waypoint, WaypointCatalog
 
 __all__ = [
     "ApiResponse",
+    "ChargeMissionRequest",
+    "ChargePolicy",
     "DomainError",
     "DuplicateMissionConflict",
     "FleetApi",
@@ -75,6 +80,9 @@ __all__ = [
     "StationLease",
     "StationPlcSnapshot",
     "TelemetryEvent",
+    "TrafficConflict",
+    "TrafficManager",
+    "TrafficReservation",
     "Waypoint",
     "WaypointCatalog",
     "build_grafana_dashboard",

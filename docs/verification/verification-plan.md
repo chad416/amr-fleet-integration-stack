@@ -29,6 +29,8 @@ Revision: A
 | T-ROS-001 | URS-F-003, URS-F-007, URS-F-009 | ROS fleet adapter maps ExecuteMission goals to validated domain mission payloads | L0 |
 | T-FLT-001 | URS-F-004 | Batch dispatch skips busy robots and assigns queued missions to eligible idle robots | L0 |
 | T-FLT-002 | URS-F-004, URS-F-008, URS-F-011, URS-F-012 | L0 fault campaign verifies stale robot, station busy, PLC stale heartbeat, recovery exhaustion and batch dispatch scenarios | L0 |
+| T-TRF-001 | URS-F-006 | Traffic zones grant one live reservation and reject conflicting robots | L0 |
+| T-CHG-001 | URS-F-004 | Low-battery available robots are selected for charge missions in deterministic priority order | L0 |
 | T-TEL-001 | URS-F-007, URS-P-005, URS-F-012 | Telemetry projection marks stale robots and preserves audit event sequence | L0 |
 | T-OBS-001 | URS-F-007 | Fleet snapshot and audit events export to Influx line protocol | L0 |
 | T-OBS-002 | URS-F-007 | Grafana dashboard artifact contains robot, mission, lease, recovery and event panels | L0 |

@@ -31,3 +31,7 @@ class DuplicateMissionConflict(DomainError):
 
 class RecoveryLimitExceeded(DomainError):
     """A mission exhausted its bounded autonomous recovery budget."""
+
+
+class TrafficConflict(DomainError):
+    """A traffic zone is reserved by another robot or mission."""

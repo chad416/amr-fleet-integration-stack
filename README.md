@@ -24,6 +24,8 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | Mission lifecycle and invariants | Implemented | Unit tests |
 | Deterministic robot dispatch | Implemented | Unit tests |
 | Batch fleet dispatch | Implemented | Multi-robot unit tests |
+| Traffic reservations | Implemented | Exclusive expiring traffic-zone tests |
+| Battery-aware charge policy | Implemented | Low-battery charge mission policy tests |
 | Exclusive station access lease | Implemented | Unit tests |
 | ROS 2 interfaces | Implemented and compiled | Colcon build evidence |
 | ROS 2 fleet adapter | Implemented, pending Jazzy runtime acceptance | Action/service/topic node, launch/config, adapter contract tests |
