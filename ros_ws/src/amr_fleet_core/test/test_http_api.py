@@ -6,7 +6,30 @@ import threading
 import unittest
 
 from amr_fleet_core import create_fleet_api, create_server
-from test_api import mission_payload, robot_payload
+
+
+def robot_payload(now: float = 100.0) -> dict:
+    return {
+        "robot_id": "amr-01",
+        "pose": {"x": 0.0, "y": 0.0, "yaw": 0.0, "frame_id": "map"},
+        "battery_percent": 82.0,
+        "health": "healthy",
+        "available": True,
+        "telemetry_at": now,
+    }
+
+
+def mission_payload(mission_id: str) -> dict:
+    return {
+        "mission_id": mission_id,
+        "stops": [
+            {
+                "station_id": "infeed",
+                "waypoint": "infeed_approach",
+                "approach_pose": {"x": 1.0, "y": 0.0, "yaw": 0.0},
+            }
+        ],
+    }
 
 
 class HttpApiTests(unittest.TestCase):
