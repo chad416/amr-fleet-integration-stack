@@ -20,6 +20,7 @@ import xml.etree.ElementTree as ET  # noqa: I100 - Ruff owns repository import o
 import yaml
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
+REPOSITORY_ROOT = PACKAGE_ROOT.parents[2]
 
 
 def test_world_contains_required_runtime_systems() -> None:
@@ -68,3 +69,14 @@ def test_bridge_contract_covers_time_and_safety_relevant_sensors() -> None:
     assert by_topic['/scan']['qos_profile'] == 'SENSOR_DATA'
     assert by_topic['/scan']['frame_id'] == 'lidar_link'
     assert by_topic['/imu/data']['frame_id'] == 'imu_link'
+
+
+def test_runtime_smoke_tests_reset_cross_domain_cli_discovery() -> None:
+    for script_name in (
+        'smoke_test_simulation.sh',
+        'smoke_test_mapping.sh',
+        'smoke_test_navigation.sh',
+        'smoke_test_multi_robot.sh',
+    ):
+        source = (REPOSITORY_ROOT / 'scripts' / script_name).read_text(encoding='utf-8')
+        assert 'ros2 daemon stop' in source

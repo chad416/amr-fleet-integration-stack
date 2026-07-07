@@ -39,3 +39,9 @@ def test_supervisor_exposes_required_health_and_operator_topics() -> None:
 def test_navigation_launch_starts_autonomy_supervisor() -> None:
     launch = (PACKAGE_ROOT / 'launch' / 'navigation.launch.py').read_text()
     assert 'autonomy_supervisor.py' in launch
+
+
+def test_supervisor_shutdown_is_idempotent() -> None:
+    source = (PACKAGE_ROOT / 'scripts' / 'autonomy_supervisor.py').read_text()
+    assert 'ExternalShutdownException' in source
+    assert 'if rclpy.ok():' in source

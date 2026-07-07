@@ -21,6 +21,7 @@ from collections.abc import Callable
 
 from amr_fleet_core import AutonomyHealth, AutonomySupervisor, MotionEnableInterlock
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from std_msgs.msg import Bool, String
 
@@ -98,9 +99,12 @@ def main() -> None:
     node = AutonomySupervisorNode()
     try:
         rclpy.spin(node)
+    except (ExternalShutdownException, KeyboardInterrupt):
+        pass
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 
 if __name__ == '__main__':

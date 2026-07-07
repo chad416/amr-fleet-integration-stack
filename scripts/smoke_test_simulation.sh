@@ -56,6 +56,10 @@ source /opt/ros/jazzy/setup.bash
 source "${INSTALL_SETUP}"
 set -u
 
+# The ros2 CLI daemon captures ROS_DOMAIN_ID when it starts. Reset it so a
+# previous acceptance process cannot leak discovery state into this domain.
+ros2 daemon stop >/dev/null 2>&1 || true
+
 wait_for() {
   local description=$1
   shift
