@@ -60,11 +60,21 @@ def test_controller_geometry_matches_generated_model() -> None:
 
     with (PACKAGE_ROOT / 'config' / 'controllers.yaml').open(encoding='utf-8') as stream:
         full_config = yaml.safe_load(stream)
-    controller_config = full_config['base_controller']['ros__parameters']
+    controller_config = full_config['/**/base_controller']['ros__parameters']
 
     assert isclose(separation, controller_config['wheel_separation'], abs_tol=1e-9)
     assert isclose(radius, controller_config['wheel_radius'], abs_tol=1e-9)
-    assert full_config['controller_manager']['ros__parameters']['enforce_command_limits']
+    manager_config = full_config['/**/controller_manager']['ros__parameters']
+    assert manager_config['enforce_command_limits']
+    assert manager_config['joint_state_broadcaster']['type']
+    assert manager_config['base_controller']['type']
+
+
+def test_controller_parameters_are_namespace_agnostic() -> None:
+    with (PACKAGE_ROOT / 'config' / 'controllers.yaml').open(encoding='utf-8') as stream:
+        full_config = yaml.safe_load(stream)
+
+    assert set(full_config) == {'/**/controller_manager', '/**/base_controller'}
 
 
 def test_simulation_plugins_and_sensor_topics_are_declared() -> None:

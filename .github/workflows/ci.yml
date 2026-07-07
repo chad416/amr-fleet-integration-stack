@@ -55,7 +55,7 @@ jobs:
 
   ros-jazzy:
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: 60
     container: ros:jazzy-ros-base-noble
     steps:
       - uses: actions/checkout@v4
@@ -97,6 +97,16 @@ jobs:
         env:
           AMR_ROS_ARTIFACT_ROOT: ${{ github.workspace }}/artifacts/ros
         run: timeout 240 bash scripts/smoke_test_simulation.sh
+      - name: Run SLAM mapping smoke acceptance
+        shell: bash
+        env:
+          AMR_ROS_ARTIFACT_ROOT: ${{ github.workspace }}/artifacts/ros
+        run: timeout 300 bash scripts/smoke_test_mapping.sh
+      - name: Run AMCL and Nav2 waypoint acceptance
+        shell: bash
+        env:
+          AMR_ROS_ARTIFACT_ROOT: ${{ github.workspace }}/artifacts/ros
+        run: timeout 360 bash scripts/smoke_test_navigation.sh
       - name: Run multi-AMR Gazebo smoke acceptance
         shell: bash
         env:
@@ -111,5 +121,7 @@ jobs:
             artifacts/ros/log/**
             artifacts/ros/log-test/**
             artifacts/ros/smoke-logs/**
+            artifacts/ros/mapping-logs/**
+            artifacts/ros/navigation-logs/**
             artifacts/ros/multi-robot-logs/**
           if-no-files-found: warn
