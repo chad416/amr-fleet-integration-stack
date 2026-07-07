@@ -4,10 +4,10 @@
 from __future__ import annotations
 
 import argparse
-import json
-import sys
 from datetime import UTC, datetime
+import json
 from pathlib import Path
+import sys
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 CORE_SOURCE = REPOSITORY_ROOT / "ros_ws" / "src" / "amr_fleet_core"

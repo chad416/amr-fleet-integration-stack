@@ -1,8 +1,8 @@
 """Static acceptance of the reproducible OT/IT container deployment."""
 
 import json
-import unittest
 from pathlib import Path
+import unittest
 
 import yaml
 

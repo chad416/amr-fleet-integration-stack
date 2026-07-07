@@ -15,8 +15,8 @@
 """Static contract tests for map and Nav2 integration."""
 
 import importlib.util
-import sys
 from pathlib import Path
+import sys  # noqa: I100 - Ruff owns repository import ordering.
 
 import yaml
 
@@ -104,9 +104,7 @@ def test_navigation_frames_topics_and_safety_chain_are_consistent() -> None:
 
 
 def test_navigation_launch_rewrites_map_server_yaml_filename() -> None:
-    launch_text = (PACKAGE_ROOT / 'launch' / 'navigation.launch.py').read_text(
-        encoding='utf-8'
-    )
+    launch_text = (PACKAGE_ROOT / 'launch' / 'navigation.launch.py').read_text(encoding='utf-8')
 
     assert 'RewrittenYaml' in launch_text
     assert "param_rewrites={'yaml_filename': map_file}" in launch_text
@@ -116,13 +114,13 @@ def test_navigation_launch_rewrites_map_server_yaml_filename() -> None:
 def test_named_waypoints_are_inside_map_bounds() -> None:
     map_metadata = load_yaml(PACKAGE_ROOT / 'maps' / 'factory.yaml')
     waypoint_config = load_yaml(PACKAGE_ROOT / 'config' / 'waypoints.yaml')
-    acceptance_source = (
-        PACKAGE_ROOT / 'scripts' / 'navigation_acceptance.py'
-    ).read_text(encoding='utf-8')
+    acceptance_source = (PACKAGE_ROOT / 'scripts' / 'navigation_acceptance.py').read_text(
+        encoding='utf-8'
+    )
 
     inspection_west = waypoint_config['waypoints']['inspection_west']
-    assert f"default={inspection_west['x']}" in acceptance_source
-    assert f"default={inspection_west['y']}" in acceptance_source
+    assert f'default={inspection_west["x"]}' in acceptance_source
+    assert f'default={inspection_west["y"]}' in acceptance_source
 
     origin_x, origin_y, _ = map_metadata['origin']
     resolution = map_metadata['resolution']

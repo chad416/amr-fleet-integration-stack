@@ -17,8 +17,8 @@
 
 from math import isfinite
 
-import rclpy
 from geometry_msgs.msg import Twist, TwistStamped
+import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 

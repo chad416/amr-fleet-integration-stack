@@ -14,8 +14,8 @@
 
 """Static acceptance tests for deterministic simulation assets."""
 
-import xml.etree.ElementTree as ET
 from pathlib import Path
+import xml.etree.ElementTree as ET  # noqa: I100 - Ruff owns repository import ordering.
 
 import yaml
 

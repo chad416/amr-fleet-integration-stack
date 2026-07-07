@@ -8,8 +8,8 @@ permission to mutate safety-relevant state.
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass
+import math
 from typing import Any
 
 from .fleet import FleetService

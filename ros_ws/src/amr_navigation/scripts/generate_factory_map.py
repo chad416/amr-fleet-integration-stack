@@ -16,10 +16,10 @@
 """Rasterize static Gazebo collision boxes into a deterministic Nav2 map."""
 
 import argparse
-import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from math import cos, sin
 from pathlib import Path
+import xml.etree.ElementTree as ET  # noqa: I100 - Ruff owns repository import ordering.
 
 
 @dataclass(frozen=True)

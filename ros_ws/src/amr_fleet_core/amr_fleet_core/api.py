@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import time
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass
+import time
 from typing import Any, Protocol
 
 from .alarms import FleetAlarmEvaluator

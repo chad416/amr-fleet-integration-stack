@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 from pathlib import Path
+import sys
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CORE_SRC = REPO_ROOT / "ros_ws" / "src" / "amr_fleet_core"

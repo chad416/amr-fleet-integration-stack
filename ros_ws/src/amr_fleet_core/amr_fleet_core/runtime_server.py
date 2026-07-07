@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+from dataclasses import dataclass
 import importlib
 import os
 import threading
 import time
-from collections.abc import Mapping
-from dataclasses import dataclass
 from typing import Any
 
 from .api import FleetApi, create_fleet_api

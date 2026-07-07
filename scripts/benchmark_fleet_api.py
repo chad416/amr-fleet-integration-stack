@@ -4,13 +4,13 @@
 from __future__ import annotations
 
 import argparse
+from datetime import UTC, datetime
 import json
+from pathlib import Path
 import statistics
 import sys
 import tempfile
 import time
-from datetime import UTC, datetime
-from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]

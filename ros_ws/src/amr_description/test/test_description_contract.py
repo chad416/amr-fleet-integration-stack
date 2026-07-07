@@ -14,9 +14,9 @@
 
 """Semantic contract tests for the generated AMR description."""
 
-import xml.etree.ElementTree as ET
 from math import isclose
 from pathlib import Path
+import xml.etree.ElementTree as ET  # noqa: I100 - Ruff owns repository import ordering.
 
 import xacro
 import yaml

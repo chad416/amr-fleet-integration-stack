@@ -49,9 +49,7 @@ def generate_launch_description() -> LaunchDescription:
     )
 
     simulation = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            str(simulation_share / 'launch' / 'simulation.launch.py')
-        ),
+        PythonLaunchDescriptionSource(str(simulation_share / 'launch' / 'simulation.launch.py')),
         launch_arguments={'headless': headless}.items(),
     )
 

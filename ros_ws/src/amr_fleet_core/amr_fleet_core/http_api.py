@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import json
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import json
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 

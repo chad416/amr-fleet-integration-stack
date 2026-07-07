@@ -19,43 +19,43 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-import rclpy
 from amr_fleet_core import AutonomyHealth, AutonomySupervisor, MotionEnableInterlock
+import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, String
 
 
 class AutonomySupervisorNode(Node):
     def __init__(self) -> None:
-        super().__init__("autonomy_supervisor")
+        super().__init__('autonomy_supervisor')
         self._health = {
-            "localization_valid": False,
-            "primary_range_sensor_healthy": False,
-            "alternate_range_sensor_healthy": False,
-            "fleet_connected": False,
-            "home_route_available": False,
-            "emergency_stop_active": False,
+            'localization_valid': False,
+            'primary_range_sensor_healthy': False,
+            'alternate_range_sensor_healthy': False,
+            'fleet_connected': False,
+            'home_route_available': False,
+            'emergency_stop_active': False,
         }
         self._interlock = MotionEnableInterlock()
         self._supervisor = AutonomySupervisor()
-        self._mode_publisher = self.create_publisher(String, "autonomy/mode", 10)
-        self._motion_publisher = self.create_publisher(Bool, "autonomy/motion_permitted", 10)
-        self._subscribe("localization/valid", self._setter("localization_valid"))
+        self._mode_publisher = self.create_publisher(String, 'autonomy/mode', 10)
+        self._motion_publisher = self.create_publisher(Bool, 'autonomy/motion_permitted', 10)
+        self._subscribe('localization/valid', self._setter('localization_valid'))
         self._subscribe(
-            "sensors/primary_range_healthy",
-            self._setter("primary_range_sensor_healthy"),
+            'sensors/primary_range_healthy',
+            self._setter('primary_range_sensor_healthy'),
         )
         self._subscribe(
-            "sensors/alternate_range_healthy",
-            self._setter("alternate_range_sensor_healthy"),
+            'sensors/alternate_range_healthy',
+            self._setter('alternate_range_sensor_healthy'),
         )
-        self._subscribe("fleet/connected", self._setter("fleet_connected"))
+        self._subscribe('fleet/connected', self._setter('fleet_connected'))
         self._subscribe(
-            "navigation/home_route_available",
-            self._setter("home_route_available"),
+            'navigation/home_route_available',
+            self._setter('home_route_available'),
         )
-        self._subscribe("safety/emergency_stop", self._on_emergency_stop)
-        self._subscribe("operator/start", self._on_operator_start)
+        self._subscribe('safety/emergency_stop', self._on_emergency_stop)
+        self._subscribe('operator/start', self._on_operator_start)
         self.create_timer(0.1, self._publish_decision)
 
     def _subscribe(self, topic: str, callback: Callable[[Bool], None]) -> None:
@@ -69,7 +69,7 @@ class AutonomySupervisorNode(Node):
 
     def _on_emergency_stop(self, message: Bool) -> None:
         active = bool(message.data)
-        self._health["emergency_stop_active"] = active
+        self._health['emergency_stop_active'] = active
         self._interlock.set_emergency_stop(active)
 
     def _on_operator_start(self, message: Bool) -> None:
@@ -103,5 +103,5 @@ def main() -> None:
         rclpy.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

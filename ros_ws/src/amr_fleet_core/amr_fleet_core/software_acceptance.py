@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 import json
 import time
-from dataclasses import dataclass
 from typing import Any
 
 from .api import FleetApi, create_fleet_api

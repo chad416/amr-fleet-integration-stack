@@ -15,9 +15,9 @@
 """Unit tests for the Jazzy Nav2-to-controller command boundary."""
 
 import importlib.util
-import sys
 from math import inf, nan
 from pathlib import Path
+import sys  # noqa: I100 - Ruff owns repository import ordering.
 
 PACKAGE_ROOT = Path(__file__).resolve().parents[1]
 
