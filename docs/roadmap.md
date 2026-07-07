@@ -39,10 +39,10 @@ Exit: repeatable mapping/localization plus approved waypoint mission in simulati
 
 Exit: 100-run single-robot mission benchmark and fault-recovery evidence.
 
-Status: the transport-independent API/recovery/telemetry slice has exit
-evidence. The ROS 2 action/service/topic adapter package is implemented and
-covered by pure contract tests. Gate 3 remains open until the adapter is built
-and accepted in Jazzy with generated ROS interfaces.
+Status: the transport-independent API/recovery/telemetry slice and ROS 2
+action/service/topic adapter are implemented. Contract, package-build and
+runtime acceptance passed in the Jazzy CI gate for the accepted software
+baseline.
 
 ## Gate 4 - Industrial station integration
 
@@ -56,9 +56,10 @@ and accepted in Jazzy with generated ROS interfaces.
 Exit: L3 integration FAT with zero station mutual-exclusion violations.
 
 Status: PLC handshake simulation, stale heartbeat inhibition, restart behavior,
-OPC UA/MQTT codecs, Influx export and Grafana dashboard JSON are covered by L0
-tests. Gate 4 remains open until the actual OPC UA/MQTT server/client processes
-and Grafana runtime are deployed.
+OPC UA codecs, a live MQTT station bridge and PLC simulator, retrying InfluxDB
+writer, provisioned Grafana dashboard and reproducible Compose deployment are
+implemented. The 100-run software FAT records zero station mutual-exclusion
+violations.
 
 ## Gate 5 - Multi-robot fleet
 
@@ -69,11 +70,11 @@ and Grafana runtime are deployed.
 
 Exit: multi-robot mission KPI report with traceable failure analysis.
 
-Status: deterministic batch dispatch across multiple eligible robots is covered
-at L0, exclusive traffic-zone reservations and charge mission policy are covered
-at L0, and the two-robot Gazebo namespace/spawn scaffold is present. Gate 5
-remains open until multi-robot Gazebo runtime traffic execution, charger docking
-behavior and soak testing are implemented.
+Status: deterministic batch dispatch, atomic globally ordered traffic-route
+reservations, charge policy, pseudo-docking and two-robot Gazebo namespace,
+sensor, TF and controller isolation are implemented. The software FAT covers
+100 contention/rollback cycles; CI passed bounded two-robot Gazebo motion
+acceptance.
 
 ## Gate 6 - Physical commissioning
 
@@ -83,3 +84,8 @@ behavior and soak testing are implemented.
 - Simulation-versus-real comparison report
 
 Exit: witnessed SAT evidence. No safety certification claim is made without the required certified process and components.
+
+Gate 6 is the only gate requiring unfinished product implementation. Its
+remaining work is strictly physical: approved hardware selection, electrical
+and mechanical integration, calibration, certified safety-chain validation,
+controlled-area SAT and simulation-versus-real evidence.

@@ -1,0 +1,25 @@
+{
+  "campaign": {
+    "degraded_mode_matrix": {
+      "passed": 5,
+      "scenarios": 5
+    },
+    "passed": true,
+    "runs": 100,
+    "station_mqtt_pseudo_docking": {
+      "api_ack_max_ms": 0.02440001117065549,
+      "api_ack_p95_ms": 0.012100004823878407,
+      "completed": 100,
+      "mutual_exclusion_violations": 0,
+      "station_busy_rejections": 100,
+      "success_rate": 1.0
+    },
+    "traffic_coordination": {
+      "conflicts_rejected": 100,
+      "deadlocks": 0,
+      "rollback_failures": 0
+    }
+  },
+  "generated_at": "2026-07-07T16:31:35.108399+00:00",
+  "revision": "39ccf7ea94ad43d1b1f642e7c74ab455e3c7e9af"
+}

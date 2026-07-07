@@ -25,20 +25,23 @@ The project does **not** claim a certified safety function. Emergency-stop and p
 | Deterministic robot dispatch | Implemented | Unit tests |
 | Batch fleet dispatch | Implemented | Multi-robot unit tests |
 | Traffic reservations | Implemented | Exclusive expiring traffic-zone tests |
+| Atomic route coordination | Implemented | Ordered all-or-none zone reservation campaign |
 | Battery-aware charge policy | Implemented | Low-battery charge mission policy tests |
 | Exclusive station access lease | Implemented | Unit tests |
 | ROS 2 interfaces | Implemented and compiled | Colcon build evidence |
-| ROS 2 fleet adapter | Implemented, pending Jazzy runtime acceptance | Action/service/topic node, launch/config, adapter contract tests |
+| ROS 2 fleet adapter | Implemented and runtime accepted | Action/service/topic node, launch/config, adapter contracts, Jazzy CI |
 | Differential-drive AMR model | Implemented and compiled | Xacro, controller configuration, Linux build |
 | Gazebo simulation baseline | Implemented and runtime accepted | Factory world, launch orchestration, bridge and motion smoke test |
 | Nav2 integration | Implemented and runtime accepted | Versioned map, AMCL, planner, controller, collision monitor, command adapter and waypoint smoke test |
-| Multi-robot simulation scaffold | Implemented, pending Gazebo runtime acceptance | Namespaced two-robot launch/config and static contract checks |
+| Multi-robot simulation | Implemented and runtime accepted | Namespaced sensors, TF, controllers, bridges and two-robot motion smoke test |
 | Remote fleet mission API | Implemented and benchmarked | JSON/HTTP adapter, unit tests, 100-run benchmark |
 | Named station waypoints | Implemented | Waypoint catalog and API named-stop tests |
 | Bounded recovery | Implemented at fleet/API layer | Recovery unit tests and benchmark evidence |
 | PLC/OPC UA station handshake | Core implemented | Station bridge, PLC simulator, lease reconciliation tests |
-| OPC UA/MQTT station transport | Implemented at codec boundary | Correlated OPC UA writes and MQTT command/status tests |
-| Fleet telemetry dashboards | Dashboard artifact implemented | Telemetry projection, alarm evaluation, Influx exporter and Grafana JSON |
+| MQTT station runtime and OPC UA boundary | Implemented | Live MQTT bridge/simulators plus correlated OPC UA codec tests |
+| Fleet telemetry dashboards | Deployable | Retrying Influx writer, provisioned Grafana datasource/dashboard and Compose stack |
+| Autonomy health supervision | Implemented | ROS node, degraded return-home modes and explicit E-stop reset/start separation |
+| Pseudo-docking | Implemented | Bounded controller and lease/pose/PLC-gated automatic station sequence |
 | Physical AMR commissioning | Hardware-dependent | Commissioning checklist |
 
 ## Repository map
@@ -60,6 +63,8 @@ scripts/benchmark_fleet_api.py
 scripts/run_fleet_fault_campaign.py
                         L0 stale-telemetry, station-busy, PLC and recovery campaign
 dashboards/grafana/     Importable Grafana dashboard JSON artifacts
+deployment/             Non-root runtime image, Mosquitto and Grafana provisioning
+compose.yaml            Fleet API, MQTT PLC simulators, InfluxDB and Grafana stack
 ```
 
 ## Run the domain verification suite
@@ -84,7 +89,19 @@ bash scripts/smoke_test_mapping.sh
 bash scripts/smoke_test_navigation.sh
 python scripts/benchmark_fleet_api.py --runs 100
 python scripts/run_fleet_fault_campaign.py
+python scripts/run_software_acceptance.py --runs 100
 ```
+
+Start the complete OT/IT demonstration runtime with:
+
+```bash
+cp deployment/.env.example .env
+# Replace every credential in .env before starting the stack.
+docker compose up --build --wait
+```
+
+The commissioning procedure is documented in
+[Software runtime commissioning](docs/commissioning/software-runtime.md).
 
 Generated ROS build, install, and test artifacts are kept on the Linux filesystem at `~/.cache/amr_fleet_ros`. This avoids severe performance and file-locking problems when a WSL build writes thousands of generated files into a Windows or OneDrive mount.
 
@@ -106,6 +123,12 @@ Generated ROS build, install, and test artifacts are kept on the Linux filesyste
 - Dashboard alarms are derived from read-only telemetry snapshots.
 - PLC station grants are accepted only when the fleet lease and PLC correlation
   match and fresh heartbeat data is present.
+- A station grant cannot advance pseudo-docking unless the assigned robot is
+  within the commissioned approach-pose tolerance.
+- Emergency-stop reset never implies permission to move; an explicit operator
+  start is required after every stop cycle.
+- Constrained traffic routes are reserved atomically in a global zone order,
+  preventing partial-reservation deadlocks.
 
 ## Documentation index
 
@@ -120,6 +143,7 @@ Generated ROS build, install, and test artifacts are kept on the Linux filesyste
 - [Gazebo baseline evidence](docs/commissioning/gazebo-baseline-evidence.md)
 - [Map management procedure](docs/commissioning/map-management.md)
 - [Navigation parameter engineering note](docs/commissioning/navigation-parameter-note.md)
+- [Software runtime commissioning](docs/commissioning/software-runtime.md)
 - [Delivery roadmap](docs/roadmap.md)
 
 ## License

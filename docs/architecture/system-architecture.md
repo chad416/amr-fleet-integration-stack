@@ -37,6 +37,18 @@ flowchart LR
 | Telemetry exporter | Metrics and event export | Buffered loss; no motion impact |
 | Fleet HTTP API | Remote mission commands and telemetry snapshots | Rejects invalid commands without mutating the domain |
 | PLC simulator | Deterministic L3 station handshake tests | Restart clears grants; bridge inhibits docking until correlation is restored |
+| Autonomy supervisor | Aggregate localization, perception, fleet-link and motion-enable health | Hold or bounded return-home; no new mission acceptance |
+| MQTT station runtime | Correlated lease publication and PLC status reconciliation | Stale, faulted or mismatched status cannot advance docking |
+| Influx exporter | Bounded-retry line-protocol delivery | Export failure is logged and never affects motion control |
+
+## Reproducible OT/IT deployment
+
+`compose.yaml` deploys the non-root fleet runtime image with a localhost-bound
+Mosquitto broker, three deterministic station simulators, InfluxDB 2.9 and
+Grafana 12.4. The Grafana datasource and committed dashboard are provisioned at
+startup. Demonstration credentials are supplied through `.env`; production use
+requires TLS, authenticated MQTT clients, external secret management and OT/IT
+network segmentation.
 
 ## Data ownership
 
