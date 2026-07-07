@@ -15,6 +15,7 @@
 """Launch a two-AMR Gazebo simulation scaffold with namespace isolation."""
 
 from pathlib import Path
+from typing import TypedDict
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -31,24 +32,37 @@ from launch.substitutions import Command, LaunchConfiguration
 from launch_ros.actions import Node, PushRosNamespace
 from launch_ros.parameter_descriptions import ParameterValue
 
-ROBOTS = (
+
+class RobotSpec(TypedDict):
+    """Fully typed launch-time specification for one simulated AMR."""
+
+    namespace: str
+    entity_name: str
+    frame_prefix: str
+    spawn_x: float
+    spawn_y: float
+    spawn_z: float
+    spawn_yaw: float
+
+
+ROBOTS: tuple[RobotSpec, ...] = (
     {
         'namespace': 'amr_01',
         'entity_name': 'amr_01',
         'frame_prefix': 'amr_01/',
-        'spawn_x': '-3.5',
-        'spawn_y': '0.8',
-        'spawn_z': '0.03',
-        'spawn_yaw': '0.0',
+        'spawn_x': -3.5,
+        'spawn_y': 0.8,
+        'spawn_z': 0.03,
+        'spawn_yaw': 0.0,
     },
     {
         'namespace': 'amr_02',
         'entity_name': 'amr_02',
         'frame_prefix': 'amr_02/',
-        'spawn_x': '-3.5',
-        'spawn_y': '-0.8',
-        'spawn_z': '0.03',
-        'spawn_yaw': '0.0',
+        'spawn_x': -3.5,
+        'spawn_y': -0.8,
+        'spawn_z': 0.03,
+        'spawn_yaw': 0.0,
     },
 )
 
@@ -112,7 +126,7 @@ def generate_launch_description() -> LaunchDescription:
     return LaunchDescription(actions)
 
 
-def _robot_group(robot: dict[str, str], robot_description: ParameterValue) -> GroupAction:
+def _robot_group(robot: RobotSpec, robot_description: ParameterValue) -> GroupAction:
     namespace = robot['namespace']
     spawn_robot = Node(
         package='ros_gz_sim',

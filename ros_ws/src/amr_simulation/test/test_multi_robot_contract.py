@@ -14,6 +14,7 @@
 
 """Static acceptance tests for the multi-robot simulation scaffold."""
 
+import ast
 from pathlib import Path
 
 import yaml
@@ -59,6 +60,23 @@ def test_multi_robot_launch_uses_namespaced_robot_description_topics() -> None:
     assert 'controller_manager' in launch_text
     assert 'joint_state_broadcaster' in launch_text
     assert 'base_controller' in launch_text
+
+
+def test_multi_robot_launch_passes_numeric_spawn_parameters() -> None:
+    launch_path = PACKAGE_ROOT / 'launch' / 'multi_robot_simulation.launch.py'
+    tree = ast.parse(launch_path.read_text(encoding='utf-8'))
+    robots_assignment = next(
+        node
+        for node in tree.body
+        if isinstance(node, ast.AnnAssign)
+        and isinstance(node.target, ast.Name)
+        and node.target.id == 'ROBOTS'
+    )
+    robots = ast.literal_eval(robots_assignment.value)
+
+    for robot in robots:
+        for parameter in ('spawn_x', 'spawn_y', 'spawn_z', 'spawn_yaw'):
+            assert isinstance(robot[parameter], float)
 
 
 def test_multi_robot_bridge_isolates_sensor_topics_and_frames() -> None:
