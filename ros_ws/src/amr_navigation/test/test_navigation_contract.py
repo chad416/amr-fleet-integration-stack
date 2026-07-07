@@ -134,3 +134,10 @@ def test_named_waypoints_are_inside_map_bounds() -> None:
         image_y = height - 1 - int((pose['y'] - origin_y) / resolution)
         assert 0 <= image_x < width and 0 <= image_y < height, name
         assert pixels[image_y * width + image_x] == 254, name
+
+
+def test_navigation_smoke_reads_lifecycle_state_via_service_contract() -> None:
+    repository_root = PACKAGE_ROOT.parents[2]
+    source = (repository_root / 'scripts' / 'smoke_test_navigation.sh').read_text(encoding='utf-8')
+    assert 'lifecycle_msgs/srv/GetState' in source
+    assert 'ros2 lifecycle get' not in source

@@ -66,7 +66,9 @@ ros2 daemon stop >/dev/null 2>&1 || true
 wait_for_lifecycle_active() {
   local node_name=$1
   local deadline=$((SECONDS + 120))
-  until timeout 3 ros2 lifecycle get "${node_name}" 2>/dev/null | grep -q '^active '; do
+  until timeout 5 ros2 service call \
+    "${node_name}/get_state" lifecycle_msgs/srv/GetState "{}" 2>/dev/null \
+    | grep -Eq "label[=:][^[:alnum:]]*active"; do
     if ! kill -0 "${LAUNCH_PID}" 2>/dev/null; then
       echo "Navigation launch exited while waiting for ${node_name}." >&2
       return 1
