@@ -98,3 +98,8 @@ runtime. It completed 100/100 station missions, rejected 100/100 traffic
 conflicts, recorded zero station mutual-exclusion violations, zero rollback
 failures/deadlocks and 5/5 degraded-mode scenarios. The machine-readable
 artifact is `docs/verification/evidence/software-acceptance-20260718T101127Z.json`.
+
+The same commit was accepted by the latest GitHub Actions run
+[29641009889](https://github.com/chad416/amr-fleet-integration-stack/actions/runs/29641009889)
+at `e9d83e3d5777c59177a3257701a74fcb0c52d91c`, including ROS package build/test,
+single-AMR Gazebo, SLAM mapping, Nav2 waypoint and multi-AMR Gazebo gates.

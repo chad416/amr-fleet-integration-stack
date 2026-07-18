@@ -1,5 +1,7 @@
 # AMR and Fleet Integration Stack
 
+[![CI](https://github.com/chad416/amr-fleet-integration-stack/actions/workflows/ci.yml/badge.svg)](https://github.com/chad416/amr-fleet-integration-stack/actions/workflows/ci.yml)
+
 An industrial-grade, simulation-first autonomous mobile robot platform demonstrating mission dispatch, ROS 2 navigation, station handshakes, fault recovery, telemetry, and OT integration.
 
 ## Engineering intent

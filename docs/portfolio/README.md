@@ -42,8 +42,8 @@ records a 100-run non-hardware campaign:
 
 ![Software acceptance dashboard](assets/software-acceptance.svg)
 
-The ROS/Gazebo runtime gates are independently exercised in the
-[passing GitHub Actions run 28881834692](https://github.com/chad416/amr-fleet-integration-stack/actions/runs/28881834692),
+The ROS/Gazebo runtime gates are independently exercised in the latest
+[passing GitHub Actions run 29641009889](https://github.com/chad416/amr-fleet-integration-stack/actions/runs/29641009889),
 including package build/test, Gazebo motion, SLAM mapping, AMCL/Nav2 waypoint
 acceptance and multi-AMR motion acceptance.
 

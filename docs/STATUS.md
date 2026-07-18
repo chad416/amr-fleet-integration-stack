@@ -63,6 +63,11 @@ calibration, controlled-area SAT and real-world comparison/demo evidence.
   includes domain-core quality gates, Compose validation, non-root image build,
   ROS Jazzy package build/test, single-AMR Gazebo smoke acceptance, SLAM mapping,
   AMCL/Nav2 waypoint acceptance and multi-AMR Gazebo smoke acceptance.
+- Latest GitHub Actions acceptance on 2026-07-18: run
+  [29641009889](https://github.com/chad416/amr-fleet-integration-stack/actions/runs/29641009889)
+  passed at commit `e9d83e3d5777c59177a3257701a74fcb0c52d91c`. The run includes
+  ROS package build/test, single-AMR Gazebo motion, SLAM mapping, AMCL/Nav2
+  waypoint acceptance and multi-AMR Gazebo motion acceptance.
 - Current local software result: 73 core tests, 3 adapter tests and 20
   simulation/navigation contract tests passed; repository-wide Ruff, strict
   mypy, XML/YAML parsing and Python compilation also passed.
@@ -102,8 +107,8 @@ calibration, controlled-area SAT and real-world comparison/demo evidence.
 ## Current gate and next gates
 
 Gates 0-5 are complete and software-accepted. The green software baseline is
-`39ccf7ea94ad43d1b1f642e7c74ab455e3c7e9af`, proven by GitHub Actions run
-`28881834692` and the local 100-run software FAT evidence artifact.
+`e9d83e3d5777c59177a3257701a74fcb0c52d91c`, proven by GitHub Actions run
+`29641009889` and the local 100-run software FAT evidence artifact.
 
 Only **Gate 6: physical commissioning** remains:
 hardware selection and approved design, mechanical/electrical integration,
