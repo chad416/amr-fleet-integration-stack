@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">AMR mission lifecycle and safe failure paths</title>
+  <desc id="desc">The mission progresses from submission to completion with explicit station lease and transfer states. Hold and recovering states are safe bounded side paths.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#0b1220"/><stop offset="1" stop-color="#14243b"/></linearGradient>
+    <linearGradient id="main" x1="0" x2="1"><stop offset="0" stop-color="#2563eb"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+    <linearGradient id="safe" x1="0" x2="1"><stop offset="0" stop-color="#b45309"/><stop offset="1" stop-color="#f59e0b"/></linearGradient>
+    <linearGradient id="recover" x1="0" x2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#c084fc"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7dd3fc"/></marker>
+    <marker id="orangeArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+    <style>
+      .title { font: 700 28px Inter, Segoe UI, sans-serif; fill: #f8fafc; }
+      .subtitle { font: 400 14px Inter, Segoe UI, sans-serif; fill: #94a3b8; }
+      .label { font: 700 13px Inter, Segoe UI, sans-serif; fill: #f8fafc; }
+      .caption { font: 400 11px Inter, Segoe UI, sans-serif; fill: #dbeafe; }
+      .lane { font: 700 12px Inter, Segoe UI, sans-serif; letter-spacing: 1.8px; fill: #94a3b8; }
+      .mainline { fill: none; stroke: #7dd3fc; stroke-width: 2.4; marker-end: url(#arrow); }
+      .safeline { fill: none; stroke: #fbbf24; stroke-width: 2; stroke-dasharray: 7 6; marker-end: url(#orangeArrow); }
+    </style>
+  </defs>
+  <rect width="1200" height="520" rx="24" fill="url(#bg)"/>
+  <text x="48" y="58" class="title">A mission is a controlled state machine</text>
+  <text x="48" y="84" class="subtitle">Assignment, station access and recovery are explicit invariants—not UI conventions</text>
+  <text x="48" y="131" class="lane">NOMINAL EXECUTION</text>
+
+  <g>
+    <rect x="48" y="158" width="124" height="64" rx="13" fill="url(#main)"/><text x="81" y="187" class="label">SUBMITTED</text><text x="70" y="207" class="caption">validated payload</text>
+    <rect x="196" y="158" width="124" height="64" rx="13" fill="url(#main)"/><text x="229" y="187" class="label">ASSIGNED</text><text x="215" y="207" class="caption">eligible robot</text>
+    <rect x="344" y="158" width="144" height="64" rx="13" fill="url(#main)"/><text x="377" y="187" class="label">NAVIGATING</text><text x="368" y="207" class="caption">Nav2 waypoint</text>
+    <rect x="512" y="158" width="144" height="64" rx="13" fill="url(#main)"/><text x="533" y="187" class="label">AT APPROACH</text><text x="540" y="207" class="caption">pose tolerance</text>
+    <rect x="680" y="158" width="150" height="64" rx="13" fill="url(#main)"/><text x="701" y="187" class="label">LEASE GRANTED</text><text x="703" y="207" class="caption">PLC correlation</text>
+    <rect x="854" y="158" width="124" height="64" rx="13" fill="url(#main)"/><text x="888" y="187" class="label">DOCKING</text><text x="870" y="207" class="caption">bounded control</text>
+    <rect x="1002" y="158" width="150" height="64" rx="13" fill="#0f766e"/><text x="1036" y="187" class="label">TRANSFER → DONE</text><text x="1027" y="207" class="caption">release + complete</text>
+  </g>
+  <path d="M172 190 H196 M320 190 H344 M488 190 H512 M656 190 H680 M830 190 H854 M978 190 H1002" class="mainline"/>
+
+  <text x="48" y="291" class="lane">SAFE SIDE PATHS</text>
+  <g>
+    <rect x="224" y="324" width="158" height="70" rx="13" fill="url(#safe)"/><text x="279" y="356" class="label">HOLD</text><text x="247" y="378" class="caption">localization / safety loss</text>
+    <rect x="492" y="324" width="158" height="70" rx="13" fill="url(#recover)"/><text x="530" y="356" class="label">RECOVERING</text><text x="516" y="378" class="caption">bounded retry budget</text>
+    <rect x="760" y="324" width="158" height="70" rx="13" fill="#7f1d1d"/><text x="798" y="356" class="label">FAILED SAFE</text><text x="783" y="378" class="caption">no reopen / no motion</text>
+  </g>
+  <path d="M410 222 V276 H303 V324 M560 222 V324 M382 359 H492 M650 359 H760" class="safeline"/>
+  <path d="M303 324 V260 H416 V222" class="safeline"/>
+  <text x="48" y="454" class="subtitle">Station access is exclusive; a stale or mismatched PLC grant cannot advance docking or transfer.</text>
+  <text x="48" y="478" class="subtitle">E-stop reset is intentionally separate from operator start, and recovery exhausts into a terminal safe state.</text>
+</svg>

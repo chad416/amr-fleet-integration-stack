@@ -1,12 +1,12 @@
 # Project Status
 
-Last audited: 2026-07-07
+Last audited: 2026-07-18
 
 ## Executive status
 
 Overall completion against the complete AMR and fleet-integration project defined
-in the portfolio PDF: **88%**. Software implementation and software acceptance
-completion: **100%**.
+in the portfolio PDF: **88%**. Software, simulation and non-hardware portfolio
+package completion: **100%**.
 
 This percentage includes simulation, navigation, OT integration, verification,
 portfolio evidence and physical commissioning. Every software module required by
@@ -26,7 +26,7 @@ calibration, controlled-area SAT and real-world comparison/demo evidence.
 | PLC/OT integration, telemetry and dashboard | 100% | Live MQTT station bridge/simulators, OPC UA codec boundary, InfluxDB writer, Grafana provisioning and Compose deployment are implemented and CI-built. |
 | FAT, fault injection and performance benchmarks | 100% software / 0% physical | 73 L0 tests, adapter/simulation contracts, fault campaign, API benchmark, 100-run software FAT and ROS/Gazebo CI gates pass; hardware SAT remains. |
 | Physical AMR commissioning | 0% | Hardware integration, calibration, safety validation and factory-floor trials have not started. |
-| Portfolio/demo evidence | 55% | Architecture, commissioning notes, machine-readable benchmark/FAT evidence and dashboard artifacts exist; physical photos/video and simulation-versus-real report require hardware. |
+| Portfolio/demo evidence | 100% non-hardware package / 0% physical evidence | Architecture, lifecycle and acceptance visuals, publication copy, demo runbook, machine-readable FAT evidence and dashboard artifacts are committed; physical photos/video and simulation-versus-real report require hardware. |
 
 ## Verified baseline
 
@@ -63,7 +63,7 @@ calibration, controlled-area SAT and real-world comparison/demo evidence.
   includes domain-core quality gates, Compose validation, non-root image build,
   ROS Jazzy package build/test, single-AMR Gazebo smoke acceptance, SLAM mapping,
   AMCL/Nav2 waypoint acceptance and multi-AMR Gazebo smoke acceptance.
-- Current local software result: 73 core tests, 3 adapter tests and 13
+- Current local software result: 73 core tests, 3 adapter tests and 20
   simulation/navigation contract tests passed; repository-wide Ruff, strict
   mypy, XML/YAML parsing and Python compilation also passed.
 - Aggregate software FAT: 100/100 MQTT pseudo-docking missions completed,
@@ -71,6 +71,15 @@ calibration, controlled-area SAT and real-world comparison/demo evidence.
   100/100 traffic conflicts rejected, 0 rollback failures/deadlocks and 5/5
   degraded-mode scenarios passed. Latest artifact:
   `docs/verification/evidence/software-acceptance-20260707T163135Z.json`.
+- Local publication-readiness rerun on 2026-07-18: 73 domain tests, 20
+  simulation/navigation contract tests, Ruff and strict mypy passed; the
+  100-run software FAT completed 100/100 station missions, recorded zero
+  mutual-exclusion violations, rejected 100/100 traffic conflicts with zero
+  rollback failures/deadlocks, and passed 5/5 degraded-mode scenarios. Latest
+  artifact: `docs/verification/evidence/software-acceptance-20260718T101127Z.json`.
+- Portfolio packaging on 2026-07-18: recruiter-facing architecture, mission
+  lifecycle and acceptance visuals plus a simulation-first recording runbook
+  are committed under `docs/portfolio/`.
 
 ## PDF deliverable traceability
 

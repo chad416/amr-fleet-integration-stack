@@ -91,3 +91,10 @@ The aggregate software FAT completed 100/100 MQTT station missions, rejected
 rejected 100/100 traffic conflicts with zero rollback failures or deadlocks, and
 passed all five degraded-mode scenarios. The committed machine-readable FAT
 artifact is `docs/verification/evidence/software-acceptance-20260707T163135Z.json`.
+
+The 2026-07-18 publication-readiness rerun passed the same aggregate campaign
+after the host-side ROS command-boundary test was made import-safe outside a ROS
+runtime. It completed 100/100 station missions, rejected 100/100 traffic
+conflicts, recorded zero station mutual-exclusion violations, zero rollback
+failures/deadlocks and 5/5 degraded-mode scenarios. The machine-readable
+artifact is `docs/verification/evidence/software-acceptance-20260718T101127Z.json`.

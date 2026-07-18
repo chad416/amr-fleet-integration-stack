@@ -76,6 +76,10 @@ sensor, TF and controller isolation are implemented. The software FAT covers
 100 contention/rollback cycles; CI passed bounded two-robot Gazebo motion
 acceptance.
 
+The non-hardware publication package is complete: architecture, mission-state
+and acceptance visuals, committed machine-readable evidence and a
+simulation-first demo runbook are under `docs/portfolio/`.
+
 ## Gate 6 - Physical commissioning
 
 - Hardware selection and approved electrical/mechanical design

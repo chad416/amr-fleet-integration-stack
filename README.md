@@ -133,6 +133,8 @@ Generated ROS build, install, and test artifacts are kept on the Linux filesyste
 ## Documentation index
 
 - [Current completion status](docs/STATUS.md)
+- [Portfolio presentation package](docs/portfolio/README.md)
+- [Simulation-first demo runbook](docs/portfolio/demo-runbook.md)
 - [User requirements specification](docs/requirements/URS.md)
 - [System architecture](docs/architecture/system-architecture.md)
 - [ROS baseline decision](docs/architecture/ADR-001-ros-baseline.md)
