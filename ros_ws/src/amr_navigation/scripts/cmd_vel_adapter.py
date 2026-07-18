@@ -95,7 +95,6 @@ if ROS_AVAILABLE:
             output.twist.angular.z = angular_z
             self.publisher.publish(output)
 
-
     def main() -> None:
         """Run the command adapter node."""
         rclpy.init()
